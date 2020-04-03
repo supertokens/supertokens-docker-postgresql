@@ -1,0 +1,8 @@
+core_config_version: 0
+postgresql_config_version: 0
+refresh_api_path: "/auth/refresh"
+cookie_domain: "supertokens.io"
+postgresql_password: "root"
+postgresql_user: "root"
+host: "0.0.0.0"
+postgresql_host: "192.168.29.48"

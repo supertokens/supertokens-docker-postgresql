@@ -1,0 +1,68 @@
+version: 2.1
+orbs:
+  jq: circleci/jq@1.9.1
+jobs:
+  publish:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - jq/install
+      - run:
+          name: build docker image and test
+          command: |
+            ./test.sh
+            if [[ $? -ne 0 ]]; then exit 1; fi
+      - run:
+          name: tag for dockerhub
+          command: |
+            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
+            git tag ${CORE_VERSION} -f
+            git push origin --tags -f
+      - run:
+          name: check if is latest core and plugin
+          command: |
+            PLUGIN_VERSION=$(cat Dockerfile | grep "ARG PLUGIN_VERSION=" | cut -d'=' -f2)
+            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
+            PLUGIN_NAME=$(cat Dockerfile | grep "ARG PLUGIN_NAME=" | cut -d'=' -f2)
+            response=`curl -s -X GET \
+              "https://api.supertokens.io/0/core/latest/check?password=$API_KEY&planType=FREE&version=$CORE_VERSION" \
+              -H 'api-version: 0'`
+            core_response=`echo $response | jq .isLatest`
+            response=`curl -s -X GET \
+              "https://api.supertokens.io/0/plugin/latest/check?password=$API_KEY&planType=FREE&version=$PLUGIN_VERSION&name=$PLUGIN_NAME" \
+              -H 'api-version: 0'`
+            plugin_response=`echo $response | jq .isLatest`
+            if [[ $core_response -eq true ]] && [[ $plugin_response -eq true ]]
+            then
+              git tag latest -f
+              git push origin --tags -f
+            fi
+  test:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - jq/install
+      - run:
+          name: build docker image and test
+          command: |
+            ./test.sh
+            if [[ $? -ne 0 ]]; then exit 1; fi
+
+workflows:
+  version: 2
+  tagged-build:
+    jobs:
+      - publish:
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
+      - test:
+          filters:
+            tags:
+              only: /dev-v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
