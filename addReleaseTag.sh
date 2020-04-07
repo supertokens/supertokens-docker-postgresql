@@ -56,7 +56,7 @@ response=`curl -s -X GET \
     "https://api.supertokens.io/0/plugin/latest/check?password=$password&planType=FREE&version=$PLUGIN_VERSION&name=$PLUGIN_NAME" \
     -H 'api-version: 0'`
 plugin_response=`echo $response | jq .isLatest`
-if [[ $core_response -eq true ]] && [[ $plugin_response -eq true ]]
+if [[ $core_response == "true" ]] && [[ $plugin_response == "true" ]]
 then
     echo "pushing to mater..."
     if [[ $branch_name == "(unnamed branch)" ]]
