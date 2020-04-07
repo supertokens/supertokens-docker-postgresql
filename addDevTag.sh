@@ -46,7 +46,7 @@ fi
 
 
 # tag this commit and push it------------
-
-git tag dev-v$version $commit_hash -f
-
-git push --tags -f
+git push origin :refs/tags/dev-v$version
+git fetch --prune --prune-tags
+git tag dev-v$version $commit_hash
+git push --tags
