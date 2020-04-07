@@ -17,8 +17,10 @@ jobs:
           name: tag for dockerhub
           command: |
             CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
-            git tag ${CORE_VERSION} -f
-            git push origin --tags -f
+            git push origin :refs/tags/${CORE_VERSION}
+            git fetch --prune --prune-tags
+            git tag ${CORE_VERSION}
+            git push origin --tags
       - run:
           name: check if is latest core and plugin
           command: |
@@ -35,8 +37,10 @@ jobs:
             plugin_response=`echo $response | jq .isLatest`
             if [[ $core_response == "true" ]] && [[ $plugin_response == "true" ]]
             then
-              git tag latest -f
-              git push origin --tags -f
+              git push origin :refs/tags/${CORE_VERSION}
+              git fetch --prune --prune-tags
+              git tag latest
+              git push origin --tags
             fi
   test:
     machine:

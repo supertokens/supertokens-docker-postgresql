@@ -40,8 +40,10 @@ fi
 git tag --delete $currTag
 git push --delete origin $currTag
 
-git tag v$version -f
-git push --tags -f
+git push origin :refs/tags/v$version
+git fetch --prune --prune-tags
+git tag v$version
+git push --tags
 
 password=`cat ./apiPassword`
 
