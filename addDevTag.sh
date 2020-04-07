@@ -18,7 +18,7 @@ then
     exit 1
 fi
 
-
+git fetch --tags -f
 git fetch --prune --prune-tags
 
 # get current commit hash------------
