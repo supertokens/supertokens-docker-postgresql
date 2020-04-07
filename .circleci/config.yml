@@ -37,7 +37,7 @@ jobs:
             plugin_response=`echo $response | jq .isLatest`
             if [[ $core_response == "true" ]] && [[ $plugin_response == "true" ]]
             then
-              git push origin :refs/tags/${CORE_VERSION}
+              git push origin :refs/tags/latest
               git fetch --prune --prune-tags
               git tag latest
               git push origin --tags
