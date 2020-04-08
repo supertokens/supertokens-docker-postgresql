@@ -61,13 +61,8 @@ docker exec -it postgres bash -c "export PGPASSWORD=root && psql -U 'root' -c 'C
 
 # setting network options for testing
 OS=`uname`
-if [[ $OS -eq "Darwin" ]] || [[ $OS -eq "darwin" ]]
-then
-    NETWORK_OPTIONS="-p 3567:3567 -e POSTGRESQL_HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)"
-    printf "\npostgresql_host: \"$(ifconfig | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}' | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)\"" >> $PWD/config.yaml
-else
-    NETWORK_OPTIONS="--network=host"
-fi
+NETWORK_OPTIONS="-p 3567:3567 -e POSTGRESQL_HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)"
+printf "\npostgresql_host: \"$(ifconfig | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}' | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
 # start with postgresql user, postgresql password, cookie domain and refresh API path
