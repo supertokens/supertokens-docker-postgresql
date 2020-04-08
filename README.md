@@ -127,7 +127,7 @@ $ docker run \
 
 ## Database setup
 - Before you start this container, make sure to [initialize your database](https://supertokens.io/docs/community/getting-started/database-setup/postgresql).
-- You need to ensure that the Postgresql database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a Postgresql instance to be available.
+- You do not need to ensure that the Postgresql database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a Postgresql instance to be available.
 
 
 ## CLI reference
