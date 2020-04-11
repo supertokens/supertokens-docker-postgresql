@@ -25,18 +25,6 @@ fi
 # check if current commit already has a tag or not------------
 currTag=`git tag -l --points-at $commit_hash`
 
-expectedCurrTag=dev-v$version
-
-if [[ $currTag == $expectedCurrTag ]]
-then
-	continue=1
-else
-	RED='\033[0;31m'
-	NC='\033[0m'
-	printf "${RED}This commit does not have the right tag for the version you want to release.${NC}\n"
-	exit 1
-fi
-
 git tag --delete $currTag
 git push --delete origin $currTag
 
