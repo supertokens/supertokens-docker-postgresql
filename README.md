@@ -49,7 +49,8 @@ Available environment variables
   
 
 ```bash
-$ docker run 
+$ docker run \
+	-p 3567:3567 \
 	-e POSTGRESQL_USER=postgresqlUser \
 	-e POSTGRESQL_HOST=localhost \
 	-e POSTGRESQL_PORT=5432 \
@@ -57,7 +58,7 @@ $ docker run
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/refresh \
 	-e LICENSE_KEY_ID=yourLicenseKeyID \
-	-d supertokens-postgresql dev
+	-d supertokens/supertokens-postgresql dev
 ```
 
 #### Using custom config file
@@ -71,9 +72,10 @@ $ docker run
 
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-v /path/to/config.yaml:/usr/lib/supertokens/config.yaml \
 	-e LICENSE_KEY_ID=yourLicenseKeyID \
-	-d supertokens-postgresql dev
+	-d supertokens/supertokens-postgresql dev
 ```
 
 ## License Key
@@ -87,23 +89,25 @@ Please check this [link](https://supertokens.io/docs/community/about-license-key
 #### Using environment variables
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-e POSTGRESQL_USER=postgresqlUser \
 	-e POSTGRESQL_PASSWORD=password \
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/path \
 	-e LICENSE_KEY_ID=<your-license-key-id> \
-	-d supertokens-postgresql production
+	-d supertokens/supertokens-postgresql production
 ```
 
 #### Using your `licenseKey` file
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-e POSTGRESQL_USER=postgresqlUser \
 	-e POSTGRESQL_PASSWORD=password \
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/path \
 	-v /path/to/licenseKey:/usr/lib/supertokens/licenseKey \	
-	-d supertokens-postgresql dev
+	-d supertokens/supertokens-postgresql dev
 ```
 
 ## Logging
@@ -114,6 +118,7 @@ $ docker run \
 
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-v /path/to/logsFolder:/home/logsFolder \
 	-e INFO_LOG_PATH=/home/logsFolder/info.log \
 	-e ERROR_LOG_PATH=/home/logsFolder/error.log \
@@ -122,7 +127,7 @@ $ docker run \
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/path \
 	-e LICENSE_KEY_ID=yourLicenseKeyId \
-	-d supertokens-postgresql production
+	-d supertokens/supertokens-postgresql production
 ```
 
 ## Database setup
