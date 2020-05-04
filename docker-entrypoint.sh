@@ -166,6 +166,18 @@ then
         echo "cookie_secure: $COOKIE_SECURE" >> $CONFIG_FILE
     fi
 
+    # check if session expired status code is passed
+    if [ ! -z $SESSION_EXPIRED_STATUS_CODE ]
+    then
+        echo "session_expired_status_code: $SESSION_EXPIRED_STATUS_CODE" >> $CONFIG_FILE
+    fi
+
+    # check if cookie same site is passed
+    if [ ! -z $COOKIE_SAME_SITE ]
+    then
+        echo "cookie_same_site: $COOKIE_SAME_SITE" >> $CONFIG_FILE
+    fi
+
     # check if max server pool size is passed
     if [ ! -z $MAX_SERVER_POOL_SIZE ]
     then
