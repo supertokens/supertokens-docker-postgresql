@@ -47,25 +47,25 @@ chown -R supertokens:supertokens /usr/lib/supertokens/
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
     # verify postgresql user name is passed
-    if [ -z $POSTGRESQL_USER ]
+    if [ ! -z $POSTGRESQL_USER ]
     then
         echo "postgresql_user: \"$POSTGRESQL_USER\"" >> $CONFIG_FILE
     fi
 
     # verify postgresql password is passed
-    if [ -z $POSTGRESQL_PASSWORD ]
+    if [ ! -z $POSTGRESQL_PASSWORD ]
     then
         echo "postgresql_password: \"$POSTGRESQL_PASSWORD\"" >> $CONFIG_FILE
     fi
 
     # verify cookie domain is passed
-    if [ -z $COOKIE_DOMAIN ]
+    if [ ! -z $COOKIE_DOMAIN ]
     then
         echo "cookie_domain: \"$COOKIE_DOMAIN\"" >> $CONFIG_FILE
     fi
 
     # verify refresh api path is passed
-    if [ -z $REFRESH_API_PATH ]
+    if [ ! -z $REFRESH_API_PATH ]
     then
         echo "refresh_api_path: \"$REFRESH_API_PATH\"" >> $CONFIG_FILE
     fi

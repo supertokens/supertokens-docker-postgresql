@@ -70,15 +70,11 @@ docker run --rm -d -e LICENSE_KEY_ID=$LICENSE_KEY_ID --name supertokens supertok
 
 sleep 10s
 
-test_equal `no_of_running_containers` 1 "start with no params"
+test_equal `no_of_running_containers` 1 "start with no network options"
 
 #---------------------------------------------------
 # start with no network options, but in mem db
 docker run -p 3567:3567 --rm -d -e LICENSE_KEY_ID=$LICENSE_KEY_ID --name supertokens supertokens-postgresql:circleci
-
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start with no params"
 
 sleep 17s
 
