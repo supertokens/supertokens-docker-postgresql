@@ -61,7 +61,7 @@ then
     # verify cookie domain is passed
     if [ ! -z $COOKIE_DOMAIN ]
     then
-        echo "cookie_domain: \"$COOKIE_DOMAIN\"" >> $CONFIG_FILE
+        echo "cookie_domain: $COOKIE_DOMAIN" >> $CONFIG_FILE
     fi
 
     # verify refresh api path is passed
