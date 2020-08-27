@@ -39,11 +39,11 @@ PLUGIN_VERSION=$(cat Dockerfile | grep "ARG PLUGIN_VERSION=" | cut -d'=' -f2)
 CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
 PLUGIN_NAME=$(cat Dockerfile | grep "ARG PLUGIN_NAME=" | cut -d'=' -f2)
 response=`curl -s -X GET \
-    "https://api.supertokens.io/0/core/latest/check?password=$password&planType=FREE&version=$CORE_VERSION" \
+    "https://api.supertokens.io/0/core/latest/check?password=$password&planType=FREE&version=$CORE_VERSION&allowDev=true" \
     -H 'api-version: 0'`
 core_response=`echo $response | jq .isLatest`
 response=`curl -s -X GET \
-    "https://api.supertokens.io/0/plugin/latest/check?password=$password&planType=FREE&version=$PLUGIN_VERSION&name=$PLUGIN_NAME" \
+    "https://api.supertokens.io/0/plugin/latest/check?password=$password&planType=FREE&version=$PLUGIN_VERSION&name=$PLUGIN_NAME&allowDev=true" \
     -H 'api-version: 0'`
 plugin_response=`echo $response | jq .isLatest`
 if [[ $core_response == "true" ]] && [[ $plugin_response == "true" ]]
