@@ -34,12 +34,6 @@ fi
 CONFIG_FILE=/usr/lib/supertokens/config.yaml
 CONFIG_MD5SUM="$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')"
 
-# check if license key id is set
-if [ ! -z $LICENSE_KEY_ID ]
-then
-    supertokens load-license --id=$LICENSE_KEY_ID
-fi
-
 # if files have been shared using shared volumes, make sure the ownership of the
 # /usr/lib/supertokens files still remains with supertokens user
 chown -R supertokens:supertokens /usr/lib/supertokens/

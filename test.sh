@@ -48,10 +48,6 @@ test_session_post () {
     fi
 }
 
-LICENSE_FILE_PATH=$PWD/licenseKey
-curl -X GET "https://api.supertokens.io/development/license-key?password=$API_KEY&planType=FREE&onExpiry=NA&expired=False" -H "api-version: 0" -s > $LICENSE_FILE_PATH
-LICENSE_KEY_ID=$(cat $LICENSE_FILE_PATH | jq -r ".info.licenseKeyId")
-
 # start postgresql server
 docker run --rm -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=root -e POSTGRES_USER=root postgres
 
@@ -65,16 +61,16 @@ NETWORK_OPTIONS="-p 3567:3567 -e POSTGRESQL_HOST=$(ifconfig | grep -E "([0-9]{1,
 printf "\npostgresql_host: \"$(ifconfig | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}' | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
-# start with no network options
-docker run --rm -d -e LICENSE_KEY_ID=$LICENSE_KEY_ID --name supertokens supertokens-postgresql:circleci --no-in-mem-db 
+# start with no options
+docker run --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db 
 
 sleep 10s
 
-test_equal `no_of_running_containers` 1 "start with no network options"
+test_equal `no_of_running_containers` 1 "start with no options"
 
 #---------------------------------------------------
 # start with no network options, but in mem db
-docker run -p 3567:3567 --rm -d -e LICENSE_KEY_ID=$LICENSE_KEY_ID --name supertokens supertokens-postgresql:circleci
+docker run -p 3567:3567 --rm -d --name supertokens supertokens-postgresql:circleci
 
 sleep 17s
 
@@ -87,84 +83,52 @@ test_session_post "start with no network options, but in mem db"
 docker rm supertokens -f
 
 #---------------------------------------------------
+# start with postgresql password
+docker run $NETWORK_OPTIONS -e POSTGRESQL_PASSWORD=root --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
+
+sleep 10s
+
+test_equal `no_of_running_containers` 1 "start with postgresql password"
+
+#---------------------------------------------------
+# start with postgresql user
+docker run $NETWORK_OPTIONS -e POSTGRESQL_USER=root --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
+
+sleep 10s
+
+test_equal `no_of_running_containers` 1 "start with postgresql user"
+
+#---------------------------------------------------
 # start with postgresql user, postgresql password
 docker run $NETWORK_OPTIONS -e POSTGRESQL_USER=root -e POSTGRESQL_PASSWORD=root --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
 
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start with postgresql user, postgresql password"
-
-#---------------------------------------------------
-# start with license key id, postgresql password
-docker run $NETWORK_OPTIONS -e POSTGRESQL_PASSWORD=root -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
-
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start with license key id, postgresql password"
-
-#---------------------------------------------------
-# start with postgresql user, license key id
-docker run $NETWORK_OPTIONS -e POSTGRESQL_USER=root -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
-
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start with postgresql user, license key id"
-
-#---------------------------------------------------
-# start with postgresql user, postgresql password and license key id
-docker run $NETWORK_OPTIONS -e POSTGRESQL_USER=root -e POSTGRESQL_PASSWORD=root -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
-
 sleep 17s
 
-test_equal `no_of_running_containers` 2 "start with postgresql user, postgresql password and license key id"
+test_equal `no_of_running_containers` 2 "start with postgresql user, postgresql password"
 
-test_hello "start with postgresql user, postgresql password and license key id"
+test_hello "start with postgresql user, postgresql password"
 
-test_session_post "start with postgresql user, postgresql password and license key id"
+test_session_post "start with postgresql user, postgresql password"
 
 docker rm supertokens -f
 
 #---------------------------------------------------
-# start by sharing config.yaml without license key id
+# start by sharing config.yaml
 docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
 
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start by sharing config.yaml without license key id"
-
-#---------------------------------------------------
-# start by sharing config.yaml with license key id
-docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
-
 sleep 17s
 
-test_equal `no_of_running_containers` 2 "start by sharing config.yaml with license key id"
+test_equal `no_of_running_containers` 2 "start by sharing config.yaml"
 
-test_hello "start by sharing config.yaml with license key id"
+test_hello "start by sharing config.yaml"
 
-test_session_post "start by sharing config.yaml with license key id"
-
-docker rm supertokens -f
-
-#---------------------------------------------------
-# start by sharing config.yaml and license key file
-docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml -v $LICENSE_FILE_PATH:/usr/lib/supertokens/licenseKey --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
-
-sleep 17s
-
-test_equal `no_of_running_containers` 2 "start by sharing config.yaml and license key file"
-
-test_hello "start by sharing config.yaml and license key file"
-
-test_session_post "start by sharing config.yaml and license key file"
+test_session_post "start by sharing config.yaml"
 
 docker rm supertokens -f
-
-rm -rf $LICENSE_FILE_PATH
 
 # ---------------------------------------------------
 # test info path
-docker run $NETWORK_OPTIONS -v $PWD:/home/supertokens -e POSTGRESQL_USER=root -e POSTGRESQL_PASSWORD=root -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
+docker run $NETWORK_OPTIONS -v $PWD:/home/supertokens -e POSTGRESQL_USER=root -e POSTGRESQL_PASSWORD=root -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
 
 sleep 17s
 
