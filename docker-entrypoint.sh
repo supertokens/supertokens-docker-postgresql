@@ -40,6 +40,9 @@ chown -R supertokens:supertokens /usr/lib/supertokens/
 
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
+
+    echo "\n" >> $CONFIG_FILE
+
     # verify postgresql user name is passed
     if [ ! -z $POSTGRESQL_USER ]
     then
@@ -184,8 +187,6 @@ then
     if [ ! -z $POSTGRESQL_HOST ]
     then
         echo "postgresql_host: \"$POSTGRESQL_HOST\"" >> $CONFIG_FILE
-    else
-        echo "postgresql_host: 0.0.0.0" >> $CONFIG_FILE
     fi
 
     # check if postgresql port is passed
