@@ -1,3 +1,10 @@
+## Quickstart
+```bash
+# This will start with an in memory database.
+
+$ docker run -p 3567:3567 -d supertokens/supertokens-postgresql
+```
+
 ## Configuration
 You can use your own `config.yaml` file as a shared volume or pass the key-values as environment variables. 
 
