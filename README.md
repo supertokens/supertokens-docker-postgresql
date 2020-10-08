@@ -13,6 +13,7 @@ If you do both, only the shared `config.yaml` file will be considered.
 #### Using environment variable
 Available environment variables
 - **Core** [[click for more info](https://supertokens.io/docs/community/configuration/core)]
+	- API\_KEYS
 	- COOKIE\_DOMAIN
 	- REFRESH\_API\_PATH
 	- SUPERTOKENS\_HOST
@@ -39,7 +40,6 @@ Available environment variables
 	- POSTGRESQL\_DATABASE\_NAME
 	- POSTGRESQL\_KEY\_VALUE\_TABLE\_NAME
 	- POSTGRESQL\_SESSION\_INFO\_TABLE\_NAME
-	- POSTGRESQL\_PAST\_TOKENS\_TABLE\_NAME
   
 
 ```bash

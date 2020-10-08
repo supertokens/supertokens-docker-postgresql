@@ -43,6 +43,12 @@ then
 
     echo "" >> $CONFIG_FILE
 
+    # verify api keys are passed
+    if [ ! -z $API_KEYS ]
+    then
+        echo "api_keys: $API_KEYS" >> $CONFIG_FILE
+    fi
+
     # verify postgresql user name is passed
     if [ ! -z $POSTGRESQL_USER ]
     then
@@ -213,11 +219,6 @@ then
         echo "postgresql_session_info_table_name: \"$POSTGRESQL_SESSION_INFO_TABLE_NAME\"" >> $CONFIG_FILE
     fi
 
-    # check if postgresql past tokens table name is passed
-    if [ ! -z $POSTGRESQL_PAST_TOKENS_TABLE_NAME ]
-    then
-        echo "postgresql_past_tokens_table_name: \"$POSTGRESQL_PAST_TOKENS_TABLE_NAME\"" >> $CONFIG_FILE
-    fi
 fi
 
 # check if no options has been passed to docker run
