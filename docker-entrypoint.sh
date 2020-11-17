@@ -42,6 +42,7 @@ if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
 
     echo "" >> $CONFIG_FILE
+    echo "host: 0.0.0.0" >> $CONFIG_FILE
 
     # verify api keys are passed
     if [ ! -z $API_KEYS ]
@@ -61,26 +62,6 @@ then
         echo "postgresql_password: \"$POSTGRESQL_PASSWORD\"" >> $CONFIG_FILE
     fi
 
-    # verify cookie domain is passed
-    if [ ! -z $COOKIE_DOMAIN ]
-    then
-        echo "cookie_domain: $COOKIE_DOMAIN" >> $CONFIG_FILE
-    fi
-
-    # verify refresh api path is passed
-    if [ ! -z $REFRESH_API_PATH ]
-    then
-        echo "refresh_api_path: \"$REFRESH_API_PATH\"" >> $CONFIG_FILE
-    fi
-
-    # check if supertokens host is passed
-    if [ ! -z $SUPERTOKENS_HOST ]
-    then
-        echo "host: \"$SUPERTOKENS_HOST\"" >> $CONFIG_FILE
-    else
-        echo "host: 0.0.0.0" >> $CONFIG_FILE
-    fi
-
     # check if supertokens port is passed
     if [ ! -z $SUPERTOKENS_PORT ]
     then
@@ -97,12 +78,6 @@ then
     if [ ! -z $ACCESS_TOKEN_BLACKLISTING ]
     then
         echo "access_token_blacklisting: $ACCESS_TOKEN_BLACKLISTING" >> $CONFIG_FILE
-    fi
-
-    # check if access token path is passed
-    if [ ! -z $ACCESS_TOKEN_PATH ]
-    then
-        echo "access_token_path: \"$ACCESS_TOKEN_PATH\"" >> $CONFIG_FILE
     fi
 
     # check if access token signing key dynamic is passed
@@ -159,28 +134,16 @@ then
         echo "error_log_path: null" >> $CONFIG_FILE
     fi
 
-    # check if cookie secure is passed
-    if [ ! -z $COOKIE_SECURE ]
-    then
-        echo "cookie_secure: $COOKIE_SECURE" >> $CONFIG_FILE
-    fi
-
-    # check if session expired status code is passed
-    if [ ! -z $SESSION_EXPIRED_STATUS_CODE ]
-    then
-        echo "session_expired_status_code: $SESSION_EXPIRED_STATUS_CODE" >> $CONFIG_FILE
-    fi
-
-    # check if cookie same site is passed
-    if [ ! -z $COOKIE_SAME_SITE ]
-    then
-        echo "cookie_same_site: $COOKIE_SAME_SITE" >> $CONFIG_FILE
-    fi
-
     # check if max server pool size is passed
     if [ ! -z $MAX_SERVER_POOL_SIZE ]
     then
         echo "max_server_pool_size: $MAX_SERVER_POOL_SIZE" >> $CONFIG_FILE
+    fi
+
+    # check if telemetry config is passed
+    if [ ! -z $DISABLE_TELEMETRY ]
+    then
+        echo "disable_telemetry: $DISABLE_TELEMETRY" >> $CONFIG_FILE
     fi
 
     # check if max server pool size is passed
@@ -217,6 +180,18 @@ then
     if [ ! -z $POSTGRESQL_SESSION_INFO_TABLE_NAME ]
     then
         echo "postgresql_session_info_table_name: \"$POSTGRESQL_SESSION_INFO_TABLE_NAME\"" >> $CONFIG_FILE
+    fi
+
+    # check if postgresql emailpassword user table name is passed
+    if [ ! -z $POSTGRESQL_EMAILPASSWORD_USERS_TABLE_NAME ]
+    then
+        echo "postgresql_emailpassword_users_table_name: \"$POSTGRESQL_EMAILPASSWORD_USERS_TABLE_NAME\"" >> $CONFIG_FILE
+    fi
+
+    # check if postgresql emailpassword password reset table name is passed
+    if [ ! -z $POSTGRESQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME ]
+    then
+        echo "postgresql_emailpassword_pswd_reset_tokens_table_name: \"$POSTGRESQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME\"" >> $CONFIG_FILE
     fi
 
 fi

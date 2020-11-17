@@ -12,26 +12,21 @@ If you do both, only the shared `config.yaml` file will be considered.
   
 #### Using environment variable
 Available environment variables
-- **Core** [[click for more info](https://supertokens.io/docs/community/configuration/core)]
+- **Core**
 	- API\_KEYS
-	- COOKIE\_DOMAIN
-	- REFRESH\_API\_PATH
 	- SUPERTOKENS\_HOST
 	- SUPERTOKENS\_PORT
 	- ACCESS\_TOKEN\_VALIDITY
 	- ACCESS\_TOKEN\_BLACKLISTING
-	- ACCESS\_TOKEN\_PATH
 	- ACCESS\_TOKEN\_SIGNING\_KEY\_DYNAMIC
 	- ACCESS\_TOKEN\_SIGNING\_KEY\_UPDATE\_INTERVAL
 	- ENABLE\_ANTI\_CSRF
 	- REFRESH\_TOKEN\_VALIDITY
 	- INFO\_LOG\_PATH
 	- ERROR\_LOG\_PATH
-	- COOKIE\_SECURE
-	- SESSION\_EXPIRED\_STATUS\_CODE
-	- COOKIE\_SAME\_SITE
     - MAX\_SERVER\_POOL\_SIZE
-- **POSTGRESQL:** [[click for more info](https://supertokens.io/docs/community/configuration/database/postgresql)]	
+	- DISABLE\_TELEMETRY
+- **POSTGRESQL:**	
 	- POSTGRESQL\_USER
 	- POSTGRESQL\_PASSWORD
 	- POSTGRESQL\_CONNECTION\_POOL\_SIZE
@@ -40,6 +35,8 @@ Available environment variables
 	- POSTGRESQL\_DATABASE\_NAME
 	- POSTGRESQL\_KEY\_VALUE\_TABLE\_NAME
 	- POSTGRESQL\_SESSION\_INFO\_TABLE\_NAME
+	- POSTGRESQL\_EMAILPASSWORD\_USERS\_TABLE\_NAME
+	- POSTGRESQL\_EMAILPASSWORD\_PSWD\_RESET\_TOKENS\_TABLE\_NAME
   
 
 ```bash
@@ -86,10 +83,6 @@ $ docker run \
 ```
 
 ## Database setup
-- Before you start this container, make sure to [initialize your database](https://supertokens.io/docs/community/getting-started/database-setup/postgresql).
+- Before you start this container, make sure to initialize your database.
 - You do not need to ensure that the Postgresql database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a Postgresql instance to be available.
 - If ```POSTGRESQL_USER``` and ```POSTGRESQL_PASSWORD``` are not provided, then SuperTokens will use an in memory database.
-
-
-## CLI reference
-Please refer to our [documentation](https://supertokens.io/docs/community/cli/overview) for this.
