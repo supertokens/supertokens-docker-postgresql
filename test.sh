@@ -70,7 +70,7 @@ test_equal `no_of_running_containers` 1 "start with no options"
 
 #---------------------------------------------------
 # start with no network options, but in mem db
-docker run -e DISABLE_TELEMETRY=true -p 3567:3567 --rm --name supertokens supertokens-postgresql:circleci
+docker run -e DISABLE_TELEMETRY=true -p 3567:3567 --rm -d --name supertokens supertokens-postgresql:circleci
 
 sleep 17s
 
