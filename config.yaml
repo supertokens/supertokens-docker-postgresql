@@ -3,3 +3,4 @@ postgresql_config_version: 0
 postgresql_password: "root"
 postgresql_user: "root"
 host: "0.0.0.0"
+disable_telemetry: true
