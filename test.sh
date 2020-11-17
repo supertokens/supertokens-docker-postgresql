@@ -16,6 +16,7 @@ no_of_running_containers () {
 
 test_hello () {
     message=$1
+    curl http://127.0.0.1:3567/hello
     STATUS_CODE=$(curl -I -X GET http://127.0.0.1:3567/hello -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
