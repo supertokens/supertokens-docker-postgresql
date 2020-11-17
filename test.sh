@@ -29,7 +29,7 @@ test_session_post () {
     STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/recipe/session -H "Content-Type: application/json" -d '{
         "userId": "testing",
         "userDataInJWT": {},
-        "userDataInDatabase": {},
+        "userDataInDatabase": {}
     }' -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
