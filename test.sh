@@ -16,7 +16,6 @@ no_of_running_containers () {
 
 test_hello () {
     message=$1
-    curl http://127.0.0.1:3567/hello
     STATUS_CODE=$(curl -I -X GET http://127.0.0.1:3567/hello -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
@@ -27,20 +26,10 @@ test_hello () {
 
 test_session_post () {
     message=$1
-    STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/session -H "Content-Type: application/json" -d '{
+    STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/recipe/session -H "Content-Type: application/json" -d '{
         "userId": "testing",
         "userDataInJWT": {},
         "userDataInDatabase": {},
-        "deviceDriverInfo": {
-            "frontendSDK": [{
-                "name": "ios",
-                "version": "1.0.0"
-            }],
-            "driver": {
-                "name": "node",
-                "version": "1.0.0"
-            }
-        }
     }' -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
