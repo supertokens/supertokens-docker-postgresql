@@ -43,7 +43,7 @@ Available environment variables
 $ docker run \
 	-p 3567:3567 \
 	-e POSTGRESQL_USER=postgresqlUser \
-	-e POSTGRESQL_HOST=localhost \
+	-e POSTGRESQL_HOST=192.168.1.2 \
 	-e POSTGRESQL_PORT=5432 \
 	-e POSTGRESQL_PASSWORD=password \
 	-d supertokens/supertokens-postgresql
