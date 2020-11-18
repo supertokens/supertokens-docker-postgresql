@@ -53,13 +53,13 @@ then
     # verify postgresql user name is passed
     if [ ! -z $POSTGRESQL_USER ]
     then
-        echo "postgresql_user: \"$POSTGRESQL_USER\"" >> $CONFIG_FILE
+        echo "postgresql_user: $POSTGRESQL_USER" >> $CONFIG_FILE
     fi
 
     # verify postgresql password is passed
     if [ ! -z $POSTGRESQL_PASSWORD ]
     then
-        echo "postgresql_password: \"$POSTGRESQL_PASSWORD\"" >> $CONFIG_FILE
+        echo "postgresql_password: $POSTGRESQL_PASSWORD" >> $CONFIG_FILE
     fi
 
     # check if supertokens port is passed
@@ -114,7 +114,7 @@ then
         # make sure supertokens user has write permission on the file
         chown supertokens:supertokens $INFO_LOG_PATH
         chmod +w $INFO_LOG_PATH
-        echo "info_log_path: \"$INFO_LOG_PATH\"" >> $CONFIG_FILE
+        echo "info_log_path: $INFO_LOG_PATH" >> $CONFIG_FILE
     else
         echo "info_log_path: null" >> $CONFIG_FILE
     fi
@@ -129,7 +129,7 @@ then
         # make sure supertokens user has write permission on the file
         chown supertokens:supertokens $ERROR_LOG_PATH
         chmod +w $ERROR_LOG_PATH
-        echo "error_log_path: \"$ERROR_LOG_PATH\"" >> $CONFIG_FILE
+        echo "error_log_path: $ERROR_LOG_PATH" >> $CONFIG_FILE
     else
         echo "error_log_path: null" >> $CONFIG_FILE
     fi
@@ -155,7 +155,7 @@ then
     # check if postgresql host is passed
     if [ ! -z $POSTGRESQL_HOST ]
     then
-        echo "postgresql_host: \"$POSTGRESQL_HOST\"" >> $CONFIG_FILE
+        echo "postgresql_host: $POSTGRESQL_HOST" >> $CONFIG_FILE
     fi
 
     # check if postgresql port is passed
@@ -167,31 +167,31 @@ then
     # check if postgresql database name is passed
     if [ ! -z $POSTGRESQL_DATABASE_NAME ]
     then
-        echo "postgresql_database_name: \"$POSTGRESQL_DATABASE_NAME\"" >> $CONFIG_FILE
+        echo "postgresql_database_name: $POSTGRESQL_DATABASE_NAME" >> $CONFIG_FILE
     fi
 
     # check if postgresql key value table name is passed
     if [ ! -z $POSTGRESQL_KEY_VALUE_TABLE_NAME ]
     then
-        echo "postgresql_key_value_table_name: \"$POSTGRESQL_KEY_VALUE_TABLE_NAME\"" >> $CONFIG_FILE
+        echo "postgresql_key_value_table_name: $POSTGRESQL_KEY_VALUE_TABLE_NAME" >> $CONFIG_FILE
     fi
 
     # check if postgresql session info table name is passed
     if [ ! -z $POSTGRESQL_SESSION_INFO_TABLE_NAME ]
     then
-        echo "postgresql_session_info_table_name: \"$POSTGRESQL_SESSION_INFO_TABLE_NAME\"" >> $CONFIG_FILE
+        echo "postgresql_session_info_table_name: $POSTGRESQL_SESSION_INFO_TABLE_NAME" >> $CONFIG_FILE
     fi
 
     # check if postgresql emailpassword user table name is passed
     if [ ! -z $POSTGRESQL_EMAILPASSWORD_USERS_TABLE_NAME ]
     then
-        echo "postgresql_emailpassword_users_table_name: \"$POSTGRESQL_EMAILPASSWORD_USERS_TABLE_NAME\"" >> $CONFIG_FILE
+        echo "postgresql_emailpassword_users_table_name: $POSTGRESQL_EMAILPASSWORD_USERS_TABLE_NAME" >> $CONFIG_FILE
     fi
 
     # check if postgresql emailpassword password reset table name is passed
     if [ ! -z $POSTGRESQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME ]
     then
-        echo "postgresql_emailpassword_pswd_reset_tokens_table_name: \"$POSTGRESQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME\"" >> $CONFIG_FILE
+        echo "postgresql_emailpassword_pswd_reset_tokens_table_name: $POSTGRESQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME" >> $CONFIG_FILE
     fi
 
 fi
