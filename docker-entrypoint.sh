@@ -194,6 +194,12 @@ then
         echo "postgresql_emailpassword_pswd_reset_tokens_table_name: $POSTGRESQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME" >> $CONFIG_FILE
     fi
 
+    # check if postgresql emailpassword email verification tokens table name is passed
+    if [ ! -z $POSTGRESQL_EMAILPASSWORD_EMAIL_VERIFICATION_TOKENS_TABLE_NAME ]
+    then
+        echo "postgresql_emailpassword_email_verification_tokens_table_name: $POSTGRESQL_EMAILPASSWORD_EMAIL_VERIFICATION_TOKENS_TABLE_NAME" >> $CONFIG_FILE
+    fi
+
 fi
 
 # check if no options has been passed to docker run
