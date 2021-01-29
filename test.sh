@@ -30,7 +30,7 @@ test_session_post () {
         "userId": "testing",
         "userDataInJWT": {},
         "userDataInDatabase": {},
-        "enableAntiCsrf: true,
+        "enableAntiCsrf": true,
     }' -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
