@@ -92,12 +92,6 @@ then
         echo "access_token_signing_key_update_interval: $ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL" >> $CONFIG_FILE
     fi
 
-    # check if enable anti csrf is passed
-    if [ ! -z $ENABLE_ANTI_CSRF ]
-    then
-        echo "enable_anti_csrf: $ENABLE_ANTI_CSRF" >> $CONFIG_FILE
-    fi
-
     # check if refresh token validity is passed
     if [ ! -z $REFRESH_TOKEN_VALIDITY ]
     then
