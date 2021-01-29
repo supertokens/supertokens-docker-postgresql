@@ -29,7 +29,8 @@ test_session_post () {
     STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/recipe/session -H "Content-Type: application/json" -d '{
         "userId": "testing",
         "userDataInJWT": {},
-        "userDataInDatabase": {}
+        "userDataInDatabase": {},
+        "enableAntiCsrf: true,
     }' -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
@@ -60,7 +61,7 @@ test_equal `no_of_running_containers` 1 "start with no options"
 
 #---------------------------------------------------
 # start with no network options, but in mem db
-docker run -e DISABLE_TELEMETRY=true -p 3567:3567 --rm --name supertokens supertokens-postgresql:circleci
+docker run -e DISABLE_TELEMETRY=true -p 3567:3567 --rm -d --name supertokens supertokens-postgresql:circleci
 
 sleep 17s
 
