@@ -200,6 +200,11 @@ then
         echo "postgresql_emailverification_verified_emails_table_name: $POSTGRESQL_EMAILVERIFICATION_VERIFIED_EMAILS_TABLE_NAME" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $POSTGRESQL_THIRDPARTY_USERS_TABLE_NAME ]
+    then
+        echo "postgresql_thirdparty_users_table_name: $POSTGRESQL_THIRDPARTY_USERS_TABLE_NAME" >> $CONFIG_FILE
+    fi
+
 fi
 
 # check if no options has been passed to docker run
