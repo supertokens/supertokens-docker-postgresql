@@ -1,8 +1,8 @@
 FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
-ARG CORE_VERSION=3.3.0
-ARG PLUGIN_VERSION=1.7.0
+ARG CORE_VERSION=3.4.0
+ARG PLUGIN_VERSION=1.8.0
 RUN apt-get update && apt-get install -y curl zip
 RUN curl -o supertokens.zip -s -X GET \
        "https://api.supertokens.io/0/app/download?pluginName=$PLUGIN_NAME&os=linux&mode=DEV&binary=$PLAN_TYPE&targetCore=$CORE_VERSION&targetPlugin=$PLUGIN_VERSION" \
