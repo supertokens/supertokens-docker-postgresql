@@ -4,8 +4,14 @@ ARG PLAN_TYPE=FREE
 ARG CORE_VERSION=3.4.0
 ARG PLUGIN_VERSION=1.8.0
 RUN apt-get update && apt-get install -y curl zip
-RUN curl -o supertokens.zip -s -X GET \
-       "https://api.supertokens.io/0/app/download?pluginName=$PLUGIN_NAME&os=linux&mode=DEV&binary=$PLAN_TYPE&targetCore=$CORE_VERSION&targetPlugin=$PLUGIN_VERSION" \
+RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
+	case "${dpkgArch##*-}" in \
+		amd64) OS='linux';; \
+		arm64) OS='linux-arm';; \
+		*) OS='linux';; \
+	esac && \
+	curl -o supertokens.zip -s -X GET \
+       "https://api.supertokens.io/0/app/download?pluginName=$PLUGIN_NAME&os=$OS&mode=DEV&binary=$PLAN_TYPE&targetCore=$CORE_VERSION&targetPlugin=$PLUGIN_VERSION" \
        -H "api-version: 0"
 RUN unzip supertokens.zip
 RUN cd supertokens && ./install
@@ -23,7 +29,6 @@ RUN set -x \
 	&& gpgconf --kill all \
 	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
-	&& gosu nobody true \
 	&& apt-get purge -y --auto-remove ca-certificates wget
 COPY --from=tmp --chown=supertokens /usr/lib/supertokens /usr/lib/supertokens
 COPY --from=tmp --chown=supertokens /usr/bin/supertokens /usr/bin/supertokens

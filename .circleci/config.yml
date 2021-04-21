@@ -2,26 +2,40 @@ version: 2.1
 orbs:
   jq: circleci/jq@1.9.1
   slack: circleci/slack@3.4.2
+  node: circleci/node@4.2.1
 jobs:
   publish:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - jq/install
+      - node/install
       - run:
           name: build docker image and test
           command: |
             ./test.sh
             if [[ $? -ne 0 ]]; then exit 1; fi
       - run:
-          name: tag for dockerhub
+          name: log in to docker hub
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - run:
+          name: core version tag
           command: |
             CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
             git push origin :refs/tags/${CORE_VERSION}
             git fetch --prune --prune-tags
             git tag ${CORE_VERSION}
             git push origin --tags
+      - run:
+          name: create and push docker image for core version tag
+          command: |
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            docker buildx create --name multiarch --driver docker-container --use
+            docker buildx inspect --bootstrap
+            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
+            docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:${CORE_VERSION} -o type=image,push=true .
       - run:
           name: check if is latest core and plugin
           command: |
@@ -42,11 +56,14 @@ jobs:
               git fetch --prune --prune-tags
               git tag latest
               git push origin --tags
+              docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:latest -o type=image,push=true .
+              token=`curl --location --request POST 'https://hub.docker.com/v2/users/login/' --header 'Content-Type: application/json' --data-raw "{\"username\": \"$DOCKER_USER\", \"password\": \"$DOCKER_PASSWORD\"}" | jq .token | tr -d '"'`
+              TOKEN=$token node updateReadme.js
             fi
       - slack/status
   test:
     machine:
-      image: ubuntu-1604:201903-01
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - jq/install
@@ -63,6 +80,7 @@ workflows:
       - publish:
           context:
             - slack-notification
+            - docker-hub
           filters:
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
