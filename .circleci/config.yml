@@ -7,6 +7,9 @@ jobs:
   publish:
     machine:
       image: ubuntu-2004:202101-01
+    environment:
+      DOCKER_BUILDKIT: 1
+      BUILDX_PLATFORMS: linux/amd64,linux/arm64
     steps:
       - checkout
       - jq/install
