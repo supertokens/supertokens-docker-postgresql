@@ -170,6 +170,11 @@ then
         echo "postgresql_table_names_prefix: $POSTGRESQL_TABLE_NAMES_PREFIX" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $POSTGRESQL_CONNECTION_URI ]
+    then
+        echo "postgresql_connection_uri: $POSTGRESQL_CONNECTION_URI" >> $CONFIG_FILE
+    fi
+
     # THE CONFIGS BELOW ARE DEPRECATED----------------
 
     # check if postgresql key value table name is passed
