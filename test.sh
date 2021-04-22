@@ -52,6 +52,7 @@ docker exec -it postgres bash -c "export PGPASSWORD=root && psql -U 'root' -c 'C
 OS=`uname`
 POSTGRES_IP=$(ip a | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1 | grep -o -E "([0-9]{1,3}\.){3}[0-9]{1,3}")
 NETWORK_OPTIONS="-p 3567:3567 -e POSTGRESQL_HOST=$POSTGRES_IP"
+NETWORK_OPTIONS_CONNECTION_URI="-p 3567:3567 -e POSTGRESQL_CONNECTION_URI=postgresql://root:root@$POSTGRES_IP:5432"
 printf "\npostgresql_host: \"$POSTGRES_IP\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
@@ -103,6 +104,20 @@ test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "
 test_hello "start with postgresql user, postgresql password"
 
 test_session_post "start with postgresql user, postgresql password"
+
+docker rm supertokens -f
+
+#---------------------------------------------------
+# start with postgresql connection uri
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
+
+sleep 17s
+
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "start with postgresql connection uri"
+
+test_hello "starstart with postgresql connection uri"
+
+test_session_post "start with postgresql connection uri"
 
 docker rm supertokens -f
 
