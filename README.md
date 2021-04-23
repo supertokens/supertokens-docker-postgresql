@@ -37,12 +37,19 @@ Available environment variables
   
 
 ```bash
-$ docker run \
+docker run \
 	-p 3567:3567 \
-	-e POSTGRESQL_USER=postgresqlUser \
-	-e POSTGRESQL_HOST=192.168.1.2 \
-	-e POSTGRESQL_PORT=5432 \
-	-e POSTGRESQL_PASSWORD=password \
+	-e POSTGRESQL_CONNECTION_URI="postgresql://username:password@host:port/dbName" \
+	-d supertokens/supertokens-postgresql
+
+# OR
+
+docker run \
+	-p 3567:3567 \
+	-e POSTGRESQL_USER="postgresqlUser" \
+	-e POSTGRESQL_HOST="192.168.1.2" \
+	-e POSTGRESQL_PORT="5432" \
+	-e POSTGRESQL_PASSWORD="password" \
 	-d supertokens/supertokens-postgresql
 ```
 
@@ -56,7 +63,7 @@ $ docker run \
 - The path for the `config.yaml` file in the container is `/usr/lib/supertokens/config.yaml`
 
 ```bash
-$ docker run \
+docker run \
 	-p 3567:3567 \
 	-v /path/to/config.yaml:/usr/lib/supertokens/config.yaml \
 	-d supertokens/supertokens-postgresql
@@ -69,17 +76,17 @@ $ docker run \
 	- Mounting the shared volume for the logging directory.
 
 ```bash
-$ docker run \
+docker run \
 	-p 3567:3567 \
 	-v /path/to/logsFolder:/home/logsFolder \
-	-e INFO_LOG_PATH=/home/logsFolder/info.log \
-	-e ERROR_LOG_PATH=/home/logsFolder/error.log \
-	-e POSTGRESQL_USER=postgresqlUser \
-	-e POSTGRESQL_PASSWORD=password \
+	-e INFO_LOG_PATH="/home/logsFolder/info.log" \
+	-e ERROR_LOG_PATH="/home/logsFolder/error.log" \
+	-e POSTGRESQL_USER="postgresqlUser" \
+	-e POSTGRESQL_PASSWORD="password" \
 	-d supertokens/supertokens-postgresql
 ```
 
 ## Database setup
 - Before you start this container, make sure to initialize your database.
 - You do not need to ensure that the Postgresql database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a Postgresql instance to be available.
-- If ```POSTGRESQL_USER``` and ```POSTGRESQL_PASSWORD``` are not provided, then SuperTokens will use an in memory database.
+- If `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD` and `POSTGRESQL_CONNECTION_URI` are not provided, then SuperTokens will use an in memory database.
