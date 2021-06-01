@@ -34,6 +34,7 @@ Available environment variables
 	- POSTGRESQL\_PORT
 	- POSTGRESQL\_DATABASE\_NAME
 	- POSTGRESQL\_TABLE\_NAMES\_PREFIX
+	- POSTGRESQL\_TABLE\_SCHEMA
   
 
 ```bash
