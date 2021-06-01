@@ -164,6 +164,12 @@ then
         echo "postgresql_database_name: $POSTGRESQL_DATABASE_NAME" >> $CONFIG_FILE
     fi
 
+    # check if postgresql table schema is passed
+    if [ ! -z $POSTGRESQL_TABLE_SCHEMA ]
+    then
+        echo "postgresql_table_schema: $POSTGRESQL_TABLE_SCHEMA" >> $CONFIG_FILE
+    fi
+
     # check if postgresql table name prefix is passed
     if [ ! -z $POSTGRESQL_TABLE_NAMES_PREFIX ]
     then
