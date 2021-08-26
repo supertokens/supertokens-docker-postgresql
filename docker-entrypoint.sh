@@ -98,6 +98,16 @@ then
         echo "refresh_token_validity: $REFRESH_TOKEN_VALIDITY" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $PASSWORD_RESET_TOKEN_LIFETIME ]
+    then
+        echo "password_reset_token_lifetime: $PASSWORD_RESET_TOKEN_LIFETIME" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $EMAIL_VERIFICATION_TOKEN_LIFETIME ]
+    then
+        echo "email_verification_token_lifetime: $EMAIL_VERIFICATION_TOKEN_LIFETIME" >> $CONFIG_FILE
+    fi
+
     # check if info log path is not passed
     if [ ! -z $INFO_LOG_PATH ]
     then
