@@ -2,7 +2,7 @@
 ```bash
 # This will start with an in memory database.
 
-$ docker run -p 3567:3567 -d supertokens/supertokens-postgresql
+$ docker run -p 3567:3567 -d registry.supertokens.io/supertokens/supertokens-postgresql
 ```
 
 ## Configuration
@@ -43,7 +43,7 @@ Available environment variables
 docker run \
 	-p 3567:3567 \
 	-e POSTGRESQL_CONNECTION_URI="postgresql://username:password@host:port/dbName" \
-	-d supertokens/supertokens-postgresql
+	-d registry.supertokens.io/supertokens/supertokens-postgresql
 
 # OR
 
@@ -53,7 +53,7 @@ docker run \
 	-e POSTGRESQL_HOST="192.168.1.2" \
 	-e POSTGRESQL_PORT="5432" \
 	-e POSTGRESQL_PASSWORD="password" \
-	-d supertokens/supertokens-postgresql
+	-d registry.supertokens.io/supertokens/supertokens-postgresql
 ```
 
 #### Using custom config file
@@ -69,7 +69,7 @@ docker run \
 docker run \
 	-p 3567:3567 \
 	-v /path/to/config.yaml:/usr/lib/supertokens/config.yaml \
-	-d supertokens/supertokens-postgresql
+	-d registry.supertokens.io/supertokens/supertokens-postgresql
 ```
 
 ## Logging
@@ -86,7 +86,7 @@ docker run \
 	-e ERROR_LOG_PATH="/home/logsFolder/error.log" \
 	-e POSTGRESQL_USER="postgresqlUser" \
 	-e POSTGRESQL_PASSWORD="password" \
-	-d supertokens/supertokens-postgresql
+	-d registry.supertokens.io/supertokens/supertokens-postgresql
 ```
 
 ## Database setup
