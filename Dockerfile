@@ -1,18 +1,18 @@
 FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
-ARG CORE_VERSION=3.6.0
+ARG CORE_VERSION=3.6.1
 ARG PLUGIN_VERSION=1.11.1
 RUN apt-get update && apt-get install -y curl zip
 RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	case "${dpkgArch##*-}" in \
-		amd64) OS='linux';; \
-		arm64) OS='linux-arm';; \
-		*) OS='linux';; \
+	amd64) OS='linux';; \
+	arm64) OS='linux-arm';; \
+	*) OS='linux';; \
 	esac && \
 	curl -o supertokens.zip -s -X GET \
-       "https://api.supertokens.io/0/app/download?pluginName=$PLUGIN_NAME&os=$OS&mode=DEV&binary=$PLAN_TYPE&targetCore=$CORE_VERSION&targetPlugin=$PLUGIN_VERSION" \
-       -H "api-version: 0"
+	"https://api.supertokens.io/0/app/download?pluginName=$PLUGIN_NAME&os=$OS&mode=DEV&binary=$PLAN_TYPE&targetCore=$CORE_VERSION&targetPlugin=$PLUGIN_VERSION" \
+	-H "api-version: 0"
 RUN unzip supertokens.zip
 RUN cd supertokens && ./install
 FROM debian:stable-slim
