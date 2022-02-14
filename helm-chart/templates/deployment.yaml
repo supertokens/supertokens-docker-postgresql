@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "supertokens.fullname" . }}
+  labels:
+    {{- include "supertokens.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "supertokens.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "supertokens.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "supertokens.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "supertokens/supertokens-postgresql:{{ .Values.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: "POSTGRESQL_DATABASE_NAME"
+              value: "{{ .Values.database.name }}"
+            - name: "POSTGRESQL_PORT"
+              value: "{{ .Values.database.port }}"
+            - name: "POSTGRESQL_HOST"
+              value: "{{ .Values.database.host }}"
+            - name: "POSTGRESQL_PASSWORD"
+              value: "{{ .Values.database.password }}"
+            - name: "POSTGRESQL_USER"
+              value: "{{ .Values.database.user }}"
+            - name: "SUPERTOKENS_PORT"
+              value: "3567"
+            - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
+              value: {{ .Values.database.connectionPoolSize }}
+            - name: "ACCESS_TOKEN_VALIDITY"
+              value: {{ .Values.accessTokenValidity }}
+            - name: "ACCESS_TOKEN_BLACKLISTING"
+              value: {{ .Values.accessTokenBlacklisting }}
+            - name: "ACCESS_TOKEN_SIGNING_KEY_DYNAMIC"
+              value: {{ .Values.accessTokenSigningKeyDynamic }}
+            - name: "ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL"
+              value: {{ .Values.accessTokenSigningKeyUpdateInterval }}
+            - name: "REFRESH_TOKEN_VALIDITY"
+              value: {{ .Values.refreshTokenValidity }}
+            - name: "PASSWORD_RESET_TOKEN_LIFETIME"
+              value: {{ .Values.passwordResetTokenLifetime }}
+            - name: "EMAIL_VERIFICATION_TOKEN_LIFETIME"
+              value: {{ .Values.emailVerificationTokenLifetime }}
+            - name: "PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS"
+              value: {{ .Values.passwordlessMaxCodeInputAttempts }}
+            - name: "PASSWORDLESS_CODE_LIFETIME"
+              value: {{ .Values.passwordlessCodeLifetime }}
+            - name: "BASE_PATH"
+              value: {{ .Values.basePath }}
+            - name: "DISABLE_TELEMETRY"
+              value: {{ .Values.disableTelemetry }}
+            - name: "MAX_SERVER_POOL_SIZE"
+              value: {{ .Values.maxServerPoolSize }}
+            {{- if .Values.apiKeys.enabled }}
+            - name: "API_KEYS"
+              value: "{{ join "," .Values.apiKeys.keys }}"
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: 3567
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /hello
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /hello
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
