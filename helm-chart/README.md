@@ -34,7 +34,7 @@ SuperTokens Core Deployment
 | maxServerPoolSize | int | `10` | maximum java server pool size |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"supertokens/supertokens"` | docker repository without database postfix |
+| image.repository | string | `"supertokens/supertokens-postgresql"` | docker repository |
 | image.tag | string | `"3.9"` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | nameOverride | string | `""` |  |

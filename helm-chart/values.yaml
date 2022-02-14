@@ -5,8 +5,7 @@
 replicaCount: 1
 
 image:
-  # -- docker repository without database postfix
-  repository: supertokens/supertokens
+  repository: supertokens/supertokens-postgresql
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: "3.9"
