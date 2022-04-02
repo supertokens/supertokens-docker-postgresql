@@ -123,6 +123,36 @@ then
         echo "base_path: $BASE_PATH" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $PASSWORD_HASHING_ALG ]
+    then
+        echo "password_hashing_alg: $PASSWORD_HASHING_ALG" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $ARGON2_ITERATIONS ]
+    then
+        echo "argon2_iterations: $ARGON2_ITERATIONS" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $ARGON2_MEMORY_KB ]
+    then
+        echo "argon2_memory_kb: $ARGON2_MEMORY_KB" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $ARGON2_PARALLELISM ]
+    then
+        echo "argon2_parallelism: $ARGON2_PARALLELISM" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $ARGON2_HASHING_POOL_SIZE ]
+    then
+        echo "argon2_hashing_pool_size: $ARGON2_HASHING_POOL_SIZE" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $BCRYPT_LOG_ROUNDS ]
+    then
+        echo "bcrypt_log_rounds: $BCRYPT_LOG_ROUNDS" >> $CONFIG_FILE
+    fi
+
     # check if info log path is not passed
     if [ ! -z $INFO_LOG_PATH ]
     then
