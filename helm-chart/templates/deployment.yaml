@@ -13,65 +13,73 @@ spec:
       {{- include "supertokens.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
+      {{- if .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "supertokens.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
+      {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "supertokens.serviceAccountName" . }}
+      {{- if .Values.podSecurityContext }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       containers:
+        - name: postgres
+          image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: "POSTGRES_PASSWORD"
+              value: {{ quote .Values.database.password }}
+            - name: "POSTGRES_USER"
+              value: {{ quote .Values.database.user }}
+          ports:
+            - name: tcp
+              containerPort: 5432
+              protocol: TCP
         - name: {{ .Chart.Name }}
+          {{- if .Values.securityContext }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: "POSTGRESQL_DATABASE_NAME"
-              value: "{{ .Values.database.name }}"
-            - name: "POSTGRESQL_PORT"
-              value: "{{ .Values.database.port }}"
-            - name: "POSTGRESQL_HOST"
-              value: "{{ .Values.database.host }}"
-            - name: "POSTGRESQL_PASSWORD"
-              value: "{{ .Values.database.password }}"
-            - name: "POSTGRESQL_USER"
-              value: "{{ .Values.database.user }}"
+            - name: "POSTGRESQL_CONNECTION_URI"
+              value: "postgresql://{{ .Values.database.user }}:{{ .Values.database.password }}@{{ .Values.database.host }}:5432/{{ .Values.database.name }}"
             - name: "SUPERTOKENS_PORT"
-              value: "3567"
+              value: {{ quote .Values.service.port }}
             - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
-              value: {{ .Values.database.connectionPoolSize }}
+              value: {{ quote .Values.database.connectionPoolSize }}
             - name: "ACCESS_TOKEN_VALIDITY"
-              value: {{ .Values.accessTokenValidity }}
+              value: {{ quote .Values.accessTokenValidity }}
             - name: "ACCESS_TOKEN_BLACKLISTING"
-              value: {{ .Values.accessTokenBlacklisting }}
+              value: {{ quote .Values.accessTokenBlacklisting }}
             - name: "ACCESS_TOKEN_SIGNING_KEY_DYNAMIC"
-              value: {{ .Values.accessTokenSigningKeyDynamic }}
+              value: {{ quote .Values.accessTokenSigningKeyDynamic }}
             - name: "ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL"
-              value: {{ .Values.accessTokenSigningKeyUpdateInterval }}
+              value: {{ quote .Values.accessTokenSigningKeyUpdateInterval }}
             - name: "REFRESH_TOKEN_VALIDITY"
-              value: {{ .Values.refreshTokenValidity }}
+              value: {{ quote .Values.refreshTokenValidity }}
             - name: "PASSWORD_RESET_TOKEN_LIFETIME"
-              value: {{ .Values.passwordResetTokenLifetime }}
+              value: {{ quote .Values.passwordResetTokenLifetime }}
             - name: "EMAIL_VERIFICATION_TOKEN_LIFETIME"
-              value: {{ .Values.emailVerificationTokenLifetime }}
+              value: {{ quote .Values.emailVerificationTokenLifetime }}
             - name: "PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS"
-              value: {{ .Values.passwordlessMaxCodeInputAttempts }}
+              value: {{ quote .Values.passwordlessMaxCodeInputAttempts }}
             - name: "PASSWORDLESS_CODE_LIFETIME"
-              value: {{ .Values.passwordlessCodeLifetime }}
+              value: {{ quote .Values.passwordlessCodeLifetime }}
             - name: "BASE_PATH"
-              value: {{ .Values.basePath }}
+              value: {{ quote .Values.basePath }}
             - name: "DISABLE_TELEMETRY"
-              value: {{ .Values.disableTelemetry }}
+              value: {{ quote .Values.disableTelemetry }}
             - name: "MAX_SERVER_POOL_SIZE"
-              value: {{ .Values.maxServerPoolSize }}
+              value: {{ quote .Values.maxServerPoolSize }}
             {{- if .Values.apiKeys.enabled }}
             - name: "API_KEYS"
               value: "{{ join "," .Values.apiKeys.keys }}"
@@ -88,17 +96,19 @@ spec:
             httpGet:
               path: /hello
               port: http
+          {{- if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+          {{- end -}}
+      {{- if .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
+      {{- end -}}
+      {{- if .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
+      {{- end -}}
+      {{- if .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- end -}}
