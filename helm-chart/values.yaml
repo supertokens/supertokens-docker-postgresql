@@ -16,12 +16,17 @@ fullnameOverride: ""
 
 # Specifies the database settings
 database:
+  image:
+    repository: postgres
+    pullPolicy: IfNotPresent
+    # -- Overrides the image tag whose default is the chart appVersion.
+    tag: "bullseye"
   # -- database name
   name: supertokens
   # -- database port
   port: 5432
   # -- database host address
-  host: postgres
+  host: localhost
   # -- database username
   user: supertokens
   # TODO: Move this into a secret
@@ -35,6 +40,7 @@ service:
   targetPort: 3567
   # nodePort:
   type: ClusterIp
+
 # -- Time in seconds for how long an access token is valid for
 accessTokenValidity: 3600
 
