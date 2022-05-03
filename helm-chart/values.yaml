@@ -16,12 +16,17 @@ fullnameOverride: ""
 
 # Specifies the database settings
 database:
+  image:
+    repository: postgres
+    pullPolicy: IfNotPresent
+    # -- Overrides the image tag whose default is the chart appVersion.
+    tag: "bullseye"
   # -- database name
   name: supertokens
   # -- database port
   port: 5432
   # -- database host address
-  host: postgres
+  host: localhost
   # -- database username
   user: supertokens
   # TODO: Move this into a secret
@@ -29,6 +34,12 @@ database:
   password: supersecretpassword
 
   connectionPoolSize: 5
+
+service:
+  port: 3567
+  targetPort: 3567
+  # nodePort: 
+  type: ClusterIp
 
 # -- Time in seconds for how long an access token is valid for
 accessTokenValidity: 3600
@@ -69,7 +80,6 @@ apiKeys:
   # -- list of API Keys to load and use with supertokens-core
   keys: []
 
-
 serviceAccount:
   # -- Specifies whether a service account should be created
   create: true
@@ -81,10 +91,12 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -93,7 +105,8 @@ securityContext: {}
   # runAsUser: 1000
 
 # -- limit and requests for resources for supertokens-core container
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -115,20 +128,19 @@ autoscaling:
   # -- target CPU usage before autoscaling
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-
 # nodeSelector: {}
 
 # tolerations: []
 
 # affinity: {}
-  # podAntiAffinity:
-  #   preferredDuringSchedulingIgnoredDuringExecution:
-  #     - weight: 1
-  #       podAffinityTerm:
-  #         labelSelector:
-  #           matchExpressions:
-  #             - key: "app.kubernetes.io/name"
-  #               operator: In
-  #               values:
-  #                 - supertokens
-  #         topologyKey: kubernetes.io/hostname
+# podAntiAffinity:
+#   preferredDuringSchedulingIgnoredDuringExecution:
+#     - weight: 1
+#       podAffinityTerm:
+#         labelSelector:
+#           matchExpressions:
+#             - key: "app.kubernetes.io/name"
+#               operator: In
+#               values:
+#                 - supertokens
+#         topologyKey: kubernetes.io/hostname
