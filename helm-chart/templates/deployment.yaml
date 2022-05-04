@@ -30,32 +30,23 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end }}
       containers:
-        - name: postgres
-          image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag | default "latest" }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: "POSTGRES_PASSWORD"
-              value: {{ quote .Values.database.password }}
-            - name: "POSTGRES_USER"
-              value: {{ quote .Values.database.user }}
-          ports:
-            - name: tcp
-              containerPort: 5432
-              protocol: TCP
         - name: {{ .Chart.Name }}
           {{- if .Values.securityContext }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          # {{ else }} 
+          # securityContext:
+          #   readOnlyRootFilesystem: true
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: "POSTGRESQL_CONNECTION_URI"
-              value: "postgresql://{{ .Values.database.user }}:{{ .Values.database.password }}@{{ .Values.database.host }}:5432/{{ .Values.database.name }}"
+              value: "postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPostgresPassword }}@{{ .Release.Namespace }}-{{ .Values.postgresql.host }}.{{ .Release.Namespace }}.svc.cluster.local:5432/{{ .Values.postgresql.dbname }}"
             - name: "SUPERTOKENS_PORT"
               value: {{ quote .Values.service.port }}
             - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
-              value: {{ quote .Values.database.connectionPoolSize }}
+              value: {{ quote .Values.postgresql.connectionPoolSize }}
             - name: "ACCESS_TOKEN_VALIDITY"
               value: {{ quote .Values.accessTokenValidity }}
             - name: "ACCESS_TOKEN_BLACKLISTING"

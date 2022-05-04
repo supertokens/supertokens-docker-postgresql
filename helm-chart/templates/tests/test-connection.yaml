@@ -12,4 +12,6 @@ spec:
       image: busybox
       command: ['wget']
       args: ['{{ include "supertokens.fullname" . }}:{{ .Values.service.port }}/hello']
+      securityContext:
+        readOnlyRootFilesystem: true
   restartPolicy: Never
