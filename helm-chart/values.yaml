@@ -3,6 +3,10 @@ image:
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: "3.12"
+  
+auth:  # -- database user and password 
+ dbUsername: supertokens
+ dbPassword: supersecretpassword
 
 replicaCount: 1
 imagePullSecrets: []
@@ -10,24 +14,26 @@ nameOverride: ""
 fullnameOverride: ""
 
 database:
+  # -- database name
+  dbName: supertokens
   postgresql:
     enabled: true
-
+    initContainer:
+      image:
+        repository: postgres
+        pullPolicy: IfNotPresent
+        # -- Overrides the image tag whose default is the chart appVersion.
+        tag: "14.2"  
 # Specifies the database settings
 postgresql:
-  # -- database name
-  dbname: supertokens
   # -- database port
   port: 5432
   # -- database host address
   host: postgresql
   # -- database username
-  postgresqlUsername: supertokens
-  # -- database user password
-  postgresqlPostgresPassword: supersecretpassword
   service:
-    type: NodePort
-    nodePort: 30017
+    type: ClusterIP
+    #nodePort: 30017
   connectionPoolSize: 5
   persistence:
     enabled: true
@@ -38,7 +44,7 @@ postgresql:
     # existingClaim:
     ## The path the volume will be mounted at, useful when using different
     ## PostgreSQL images.
-    mountPath: /bitnami/postgresql
+    #mountPath: /bitnami/postgresql
   ## The subdirectory of the volume to mount to, useful in dev environments
   ## and one PV for multiple services.
   subPath: ""
