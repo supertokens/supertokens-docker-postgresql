@@ -1,45 +1,69 @@
-# Default values for supertokens.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-replicaCount: 1
-
 image:
   repository: supertokens/supertokens-postgresql
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: "3.12"
+  
+auth:  # -- database user and password 
+ dbUsername: supertokens
+ dbPassword: supersecretpassword
 
+replicaCount: 1
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-# Specifies the database settings
 database:
-  image:
-    repository: postgres
-    pullPolicy: IfNotPresent
-    # -- Overrides the image tag whose default is the chart appVersion.
-    tag: "bullseye"
   # -- database name
-  name: supertokens
+  dbName: supertokens
+  postgresql:
+    enabled: true
+    initContainer:
+      image:
+        repository: postgres
+        pullPolicy: IfNotPresent
+        # -- Overrides the image tag whose default is the chart appVersion.
+        tag: "14.2"  
+# Specifies the database settings
+postgresql:
   # -- database port
   port: 5432
   # -- database host address
-  host: localhost
+  host: postgresql
   # -- database username
-  user: supertokens
-  # TODO: Move this into a secret
-  # -- database user password
-  password: supersecretpassword
-
+  service:
+    type: ClusterIP
+    #nodePort: 30017
   connectionPoolSize: 5
+  persistence:
+    enabled: true
+    ## A manually managed Persistent Volume and Claim
+    ## If defined, PVC must be created manually before volume will be bound
+    ## The value is evaluated as a template, so, for example, the name can depend on .Release or .Chart
+    ##
+    # existingClaim:
+    ## The path the volume will be mounted at, useful when using different
+    ## PostgreSQL images.
+    #mountPath: /bitnami/postgresql
+  ## The subdirectory of the volume to mount to, useful in dev environments
+  ## and one PV for multiple services.
+  subPath: ""
+  # storageClass: "-"
+  accessModes:
+    - ReadWriteOnce
+  size: 8Gi
+  annotations: {}
+
+## updateStrategy for PostgreSQL StatefulSet and its slaves StatefulSets
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
+updateStrategy:
+  type: RollingUpdate
 
 service:
   port: 3567
   targetPort: 3567
-  # nodePort: 
-  type: ClusterIp
+  nodePort: ""
+  type: ClusterIP
 
 # -- Time in seconds for how long an access token is valid for
 accessTokenValidity: 3600

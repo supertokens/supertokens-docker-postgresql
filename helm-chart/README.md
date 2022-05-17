@@ -4,6 +4,17 @@
 
 SuperTokens Core Deployment
 
+## Deployment
+
+To install with in cluster postgres deployment, the chart currently does not support external postgres servers.
+
+
+```bash
+  helm install supertokens . -n supertokens --create-namespace
+```
+
+
+
 ## Values
 
 | Key | Type | Default | Description |

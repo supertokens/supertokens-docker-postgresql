@@ -29,33 +29,53 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end }}
-      containers:
-        - name: postgres
-          image: "{{ .Values.database.image.repository }}:{{ .Values.database.image.tag | default "latest" }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+      initContainers:
+        - name: postgres-init
+          image: "{{ .Values.database.postgresql.initContainer.image.repository }}:{{ .Values.database.postgresql.initContainer.image.tag | default "latest" }}"
+          command: 
+          - 'sh'
+          - '-c'
+          - "until psql postgresql://postgres:${POSTGRES_PASSWORD}@{{ .Release.Namespace }}-{{ .Values.postgresql.host }}.{{ .Release.Namespace }}.svc.cluster.local:5432; 
+                                do echo trying to connect to postgres - waiting 5 sec for it to load up; sleep 5;done;echo succes connecting to postgres; 
+                                psql postgresql://postgres:${POSTGRES_PASSWORD}@{{ .Release.Namespace }}-{{ .Values.postgresql.host }}.{{ .Release.Namespace }}.svc.cluster.local:5432 -c \"CREATE ROLE ${SUPERTOKENS_USER} WITH LOGIN ENCRYPTED PASSWORD '${SUPERTOKENS_PASSWORD}'\";
+                                psql postgresql://postgres:${POSTGRES_PASSWORD}@{{ .Release.Namespace }}-{{ .Values.postgresql.host }}.{{ .Release.Namespace }}.svc.cluster.local:5432 -c \"CREATE DATABASE {{ .Values.database.dbName }} WITH OWNER = ${SUPERTOKENS_USER} ENCODING = 'UTF8' CONNECTION LIMIT = -1 \";"
           env:
-            - name: "POSTGRES_PASSWORD"
-              value: {{ quote .Values.database.password }}
-            - name: "POSTGRES_USER"
-              value: {{ quote .Values.database.user }}
-          ports:
-            - name: tcp
-              containerPort: 5432
-              protocol: TCP
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: supertokens-postgresql
+                  key: postgresql-password
+                  optional: false 
+            - name: SUPERTOKENS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "supertokens.fullname" . }}-db-creds
+                  key: dbUsername
+                  optional: false
+            - name: SUPERTOKENS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "supertokens.fullname" . }}-db-creds
+                  key: dbPassword
+                  optional: false       
+      containers:
         - name: {{ .Chart.Name }}
           {{- if .Values.securityContext }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          # {{ else }} 
+          # securityContext:
+          #   readOnlyRootFilesystem: true
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: "POSTGRESQL_CONNECTION_URI"
-              value: "postgresql://{{ .Values.database.user }}:{{ .Values.database.password }}@{{ .Values.database.host }}:5432/{{ .Values.database.name }}"
+              value: "postgresql://${SUPERTOKENS_USER}:${SUPERTOKENS_PASSWORD}@{{ .Release.Namespace }}-{{ .Values.postgresql.host }}.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.postgresql.port }}/{{ .Values.database.dbName }}"
             - name: "SUPERTOKENS_PORT"
               value: {{ quote .Values.service.port }}
             - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
-              value: {{ quote .Values.database.connectionPoolSize }}
+              value: {{ quote .Values.postgresql.connectionPoolSize }}
             - name: "ACCESS_TOKEN_VALIDITY"
               value: {{ quote .Values.accessTokenValidity }}
             - name: "ACCESS_TOKEN_BLACKLISTING"
@@ -84,6 +104,18 @@ spec:
             - name: "API_KEYS"
               value: "{{ join "," .Values.apiKeys.keys }}"
             {{- end }}
+            - name: SUPERTOKENS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "supertokens.fullname" . }}-db-creds
+                  key: dbUsername
+                  optional: false
+            - name: SUPERTOKENS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "supertokens.fullname" . }}-db-creds
+                  key: dbPassword
+                  optional: false
           ports:
             - name: http
               containerPort: 3567
@@ -96,7 +128,7 @@ spec:
             httpGet:
               path: /hello
               port: http
-          {{- if .Values.resources }}
+          {{ if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- end -}}
