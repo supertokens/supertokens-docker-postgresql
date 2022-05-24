@@ -2,11 +2,11 @@ image:
   repository: supertokens/supertokens-postgresql
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
-  tag: "3.12"
-  
-auth:  # -- database user and password 
- dbUsername: supertokens
- dbPassword: supersecretpassword
+  tag: "3.13"
+
+auth: # -- database user and password
+  dbUsername: supertokens
+  dbPassword: supersecretpassword
 
 replicaCount: 1
 imagePullSecrets: []
@@ -23,7 +23,7 @@ database:
         repository: postgres
         pullPolicy: IfNotPresent
         # -- Overrides the image tag whose default is the chart appVersion.
-        tag: "14.2"  
+        tag: "14.2"
 # Specifies the database settings
 postgresql:
   # -- database port
