@@ -10,7 +10,7 @@ You can use your own `config.yaml` file as a shared volume or pass the key-value
 
 If you do both, only the shared `config.yaml` file will be considered.
   
-#### Using environment variable
+#### Using environment variables
 Available environment variables
 - **Core**
 	- API\_KEYS
