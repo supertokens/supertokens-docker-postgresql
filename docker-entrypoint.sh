@@ -56,15 +56,15 @@ then
         echo "postgresql_user: $POSTGRESQL_USER" >> $CONFIG_FILE
     fi
 
+    if [ -n "${POSTGRES_PASSWORD_FILE}" ]; then
+        POSTGRES_PASSWORD=$(cat "$POSTGRES_PASSWORD_FILE")
+        export POSTGRES_PASSWORD
+    fi
+
     # verify postgresql password is passed
     if [ ! -z $POSTGRESQL_PASSWORD ]
     then
         echo "postgresql_password: $POSTGRESQL_PASSWORD" >> $CONFIG_FILE
-    fi
-
-    if [ -n "${POSTGRES_PASSWORD_FILE}" ]; then
-        POSTGRES_PASSWORD=$(cat "$POSTGRES_PASSWORD_FILE")
-        export POSTGRES_PASSWORD
     fi
 
     # check if supertokens port is passed
