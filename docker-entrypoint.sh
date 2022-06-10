@@ -62,6 +62,11 @@ then
         echo "postgresql_password: $POSTGRESQL_PASSWORD" >> $CONFIG_FILE
     fi
 
+    if [ -n "${POSTGRES_PASSWORD_FILE}" ]; then
+        POSTGRES_PASSWORD=$(cat "$POSTGRES_PASSWORD_FILE")
+        export POSTGRES_PASSWORD
+    fi
+
     # check if supertokens port is passed
     if [ ! -z $SUPERTOKENS_PORT ]
     then
