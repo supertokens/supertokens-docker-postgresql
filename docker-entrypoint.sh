@@ -56,9 +56,9 @@ then
         echo "postgresql_user: $POSTGRESQL_USER" >> $CONFIG_FILE
     fi
 
-    if [ -n "${POSTGRES_PASSWORD_FILE}" ]; then
-        POSTGRES_PASSWORD=$(cat "$POSTGRES_PASSWORD_FILE")
-        export POSTGRES_PASSWORD
+    if [ -n "${POSTGRESQL_PASSWORD_FILE}" ]; then
+        POSTGRESQL_PASSWORD=$(cat "$POSTGRESQL_PASSWORD_FILE")
+        export POSTGRESQL_PASSWORD
     fi
 
     # verify postgresql password is passed
