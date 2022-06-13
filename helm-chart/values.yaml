@@ -39,7 +39,7 @@ service:
   port: 3567
   targetPort: 3567
   # nodePort: 
-  type: ClusterIp
+  type: ClusterIP
 
 # -- Time in seconds for how long an access token is valid for
 accessTokenValidity: 3600
