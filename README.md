@@ -10,7 +10,7 @@ You can use your own `config.yaml` file as a shared volume or pass the key-value
 
 If you do both, only the shared `config.yaml` file will be considered.
   
-#### Using environment variable
+#### Using environment variables
 Available environment variables
 - **Core**
 	- API\_KEYS
@@ -40,6 +40,7 @@ Available environment variables
 	- POSTGRESQL\_CONNECTION\_URI
 	- POSTGRESQL\_USER
 	- POSTGRESQL\_PASSWORD
+	- POSTGRESQL\_PASSWORD\_FILE
 	- POSTGRESQL\_CONNECTION\_POOL\_SIZE
 	- POSTGRESQL\_HOST
 	- POSTGRESQL\_PORT
@@ -101,4 +102,4 @@ docker run \
 ## Database setup
 - Before you start this container, make sure to initialize your database.
 - You do not need to ensure that the Postgresql database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a Postgresql instance to be available.
-- If `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD` and `POSTGRESQL_CONNECTION_URI` are not provided, then SuperTokens will use an in memory database.
+- If `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD`, `POSTGRESQL_PASSWORD_FILE` and `POSTGRESQL_CONNECTION_URI` are not provided, then SuperTokens will use an in memory database.
