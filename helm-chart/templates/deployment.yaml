@@ -44,7 +44,7 @@ spec:
             - name: "POSTGRESQL_DATABASE_NAME"
               value: {{ quote .Values.database.name }}
             - name: "POSTGRESQL_PORT"
-              value: {{ .Values.database.port }}
+              value: {{ quote .Values.database.port }}
             - name: "POSTGRESQL_HOST"
               value: {{ quote .Values.database.host }}
             - name: "POSTGRESQL_USER"
