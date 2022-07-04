@@ -6,7 +6,7 @@ SuperTokens Core Deployment
 
 ## Deployment
 
-To install with in cluster postgres deployment, the chart currently does not support external postgres servers.
+The chart currently use external postgres servers.
 
 
 ```bash
