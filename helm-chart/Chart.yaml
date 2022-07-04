@@ -1,11 +1,6 @@
 apiVersion: v2
 name: supertokens
 description: SuperTokens Core Deployment
-dependencies:
-  - name: postgresql
-    version: 9.2.1
-    repository: https://charts.bitnami.com/bitnami
-    condition: database.postgresql.enabled
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives
