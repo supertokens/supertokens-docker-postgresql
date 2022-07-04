@@ -2,7 +2,7 @@ image:
   repository: supertokens/supertokens-postgresql
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
-  tag: "3.13"
+  tag: "3.14"
 
 replicaCount: 1
 imagePullSecrets: []
