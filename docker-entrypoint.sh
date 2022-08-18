@@ -159,6 +159,11 @@ then
         echo "bcrypt_log_rounds: $BCRYPT_LOG_ROUNDS" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $LOG_LEVEL ]
+    then
+        echo "log_level: $LOG_LEVEL" >> $LOG_LEVEL
+    fi
+
     # check if info log path is not passed
     if [ ! -z $INFO_LOG_PATH ]
     then
