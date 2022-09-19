@@ -159,6 +159,16 @@ then
         echo "bcrypt_log_rounds: $BCRYPT_LOG_ROUNDS" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $FIREBASE_PASSWORD_HASHING_SIGNER_KEY ]
+    then
+        echo "firebase_password_hashing_signer_key: $FIREBASE_PASSWORD_HASHING_SIGNER_KEY" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $FIREBASE_PASSWORD_HASHING_POOL_SIZE ]
+    then
+        echo "firebase_password_hashing_pool_size: $FIREBASE_PASSWORD_HASHING_POOL_SIZE" >> $CONFIG_FILE
+    fi
+
     if [ ! -z $LOG_LEVEL ]
     then
         echo "log_level: $LOG_LEVEL" >> $CONFIG_FILE
