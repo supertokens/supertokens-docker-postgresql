@@ -174,6 +174,16 @@ then
         echo "log_level: $LOG_LEVEL" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $IP_ALLOW_REGEX ]
+    then
+        echo "ip_allow_regex: $IP_ALLOW_REGEX" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $IP_DENY_REGEX ]
+    then
+        echo "ip_deny_regex: $IP_DENY_REGEX" >> $CONFIG_FILE
+    fi
+
     # check if info log path is not passed
     if [ ! -z $INFO_LOG_PATH ]
     then
