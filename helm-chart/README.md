@@ -30,6 +30,7 @@ The chart currently use external postgres servers.
 | database.password | string | `"supersecretpassword"` | database user password |
 | database.port | int | `5432` | database port |
 | database.user | string | `"supertokens"` | database username |
+| database.schema | string | `"supertokens"` | database schema |
 | database.connectionPoolSize | int | `5` | maximum postgres connection pool size |
 | accessTokenValidity | int | `3600` | Time in seconds for how long an access token is valid for |
 | accessTokenBlacklisting | bool | `false` | If true, allows for immediate revocation of any access token. Keep in mind that setting this to true will result in a db query for each API call that requires authentication. |

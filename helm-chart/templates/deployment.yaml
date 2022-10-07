@@ -51,6 +51,8 @@ spec:
               value: {{ quote .Values.database.user }}
             - name: "POSTGRESQL_PASSWORD"
               value: {{ quote .Values.database.password }}
+            - name: "POSTGRESQL_TABLE_SCHEMA"
+              value: {{ quote .Values.database.schema }}
             - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
               value: {{ quote .Values.database.connectionPoolSize }}
             - name: "SUPERTOKENS_PORT"
