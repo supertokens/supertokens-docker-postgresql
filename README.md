@@ -1,3 +1,16 @@
+## Spill specific information
+The below is based on the Heroku tutorial which can be found [here](https://devcenter.heroku.com/articles/container-registry-and-runtime#cli)
+To deploy this image to Heroku the following steps should be followed:
+1. Build the image: `docker buildx build --platform linux/amd64 -t <some-tag> .` (This ensures that the image is built on the correct architecture. Heroku doesn't like images built to the M1 Mac specificaiton)
+2. Tag the image: `docker tag <some-tag> registry.heroku.com/spill-supertokens/web`
+3. Push the image to the Heroku registry: `docker push registry.heroku.com/spill-supertokens/web`
+4. Login to the Heroku cli (download it if you don't already have it)
+5. Release the image: `heroku container:release web -a spill-supertokens-staging` 
+6. Check that its running: `heroku open -a spill-supertokens-staging`
+
+### WHy did we fork this repo?
+We have also made some changes to the `docker-entrypoint.sh` specifically around the ownership of file directories by the supertokens user. The command `chown -R supertokens:supertokens /usr/lib/supertokens/` on line 35 causes the container to crash. Our current workaround is to just comment out the line as done in this [issue](https://github.com/supertokens/supertokens-core/issues/354) raised last year 
+
 ## Quickstart
 ```bash
 # This will start with an in memory database.
