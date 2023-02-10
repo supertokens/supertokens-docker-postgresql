@@ -15,14 +15,14 @@ spec:
     metadata:
       {{- if .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
       {{- end }}
       labels:
         {{- include "supertokens.selectorLabels" . | nindent 8 }}
     spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "supertokens.serviceAccountName" . }}
       {{- if .Values.podSecurityContext }}
