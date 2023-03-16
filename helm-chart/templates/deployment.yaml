@@ -4,10 +4,6 @@ metadata:
   name: {{ include "supertokens.fullname" . }}
   labels:
     {{- include "supertokens.labels" . | nindent 4 }}
-  {{- if .Values.deploymentAnnotations }}
-  annotations:
-    {{- toYaml .Values.deploymentAnnotations | nindent 4 }}
-  {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -19,14 +15,14 @@ spec:
     metadata:
       {{- if .Values.podAnnotations }}
       annotations:
-        {{- toYaml .Values.podAnnotations | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "supertokens.selectorLabels" . | nindent 8 }}
     spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "supertokens.serviceAccountName" . }}
       {{- if .Values.podSecurityContext }}
