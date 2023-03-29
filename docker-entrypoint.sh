@@ -184,6 +184,16 @@ then
         echo "ip_deny_regex: $IP_DENY_REGEX" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $TOTP_MAX_ATTEMPTS ]
+    then
+        echo "totp_max_attempts: $TOTP_MAX_ATTEMPTS" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $TOTP_RATE_LIMIT_COOLDOWN_SEC ]
+    then
+        echo "totp_rate_limit_cooldown_sec: $TOTP_RATE_LIMIT_COOLDOWN_SEC" >> $CONFIG_FILE
+    fi
+
     # check if info log path is not passed
     if [ ! -z $INFO_LOG_PATH ]
     then
