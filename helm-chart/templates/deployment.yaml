@@ -89,14 +89,8 @@ spec:
             - name: http
               containerPort: 3567
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /hello
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /hello
-              port: http
+          livenessProbe: {{ .Values.livenessProbe | toYaml | nindent 12 }}
+          readinessProbe: {{ .Values.readinessProbe | toYaml | nindent 12 }}
           {{ if .Values.resources }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -54,6 +54,8 @@ The chart currently use external postgres servers.
 | podSecurityContext | object | `{}` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` | limit and requests for resources for supertokens-core container |
+| livenessProbe | object | See [values.yaml] | Configure liveness [probe] for the supertokens-core container |
+| readinessProbe | object | See [values.yaml] | Configure readiness [probe] for the supertokens-core container |
 | securityContext | object | `{}` |  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
