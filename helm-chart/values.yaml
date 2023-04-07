@@ -104,6 +104,28 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
+# -- Configure liveness [probe] for the supertokens-core container
+# @default -- See [values.yaml]
+livenessProbe:
+  httpGet:
+    path: /hello
+    port: http
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 30
+
+# -- Configure readiness [probe] for the supertokens-core container
+# @default -- See [values.yaml]
+readinessProbe:
+  httpGet:
+    path: /hello
+    port: http
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 30
+
 autoscaling:
   # -- enable autoscaling of replicas
   enabled: false
