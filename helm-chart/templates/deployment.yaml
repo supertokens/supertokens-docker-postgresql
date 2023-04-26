@@ -41,16 +41,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: "POSTGRESQL_DATABASE_NAME"
-              value: {{ quote .Values.database.name }}
-            - name: "POSTGRESQL_PORT"
-              value: {{ quote .Values.database.port }}
-            - name: "POSTGRESQL_HOST"
-              value: {{ quote .Values.database.host }}
-            - name: "POSTGRESQL_USER"
-              value: {{ quote .Values.database.user }}
-            - name: "POSTGRESQL_PASSWORD"
-              value: {{ quote .Values.database.password }}
             - name: "POSTGRESQL_TABLE_SCHEMA"
               value: {{ quote .Values.database.schema }}
             - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
@@ -81,10 +71,9 @@ spec:
               value: {{ quote .Values.disableTelemetry }}
             - name: "MAX_SERVER_POOL_SIZE"
               value: {{ quote .Values.maxServerPoolSize }}
-            {{- if .Values.apiKeys.enabled }}
-            - name: "API_KEYS"
-              value: "{{ join "," .Values.apiKeys.keys }}"
-            {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.existingSecret | default (include "supertokens.fullname" .) }}
           ports:
             - name: http
               containerPort: 3567

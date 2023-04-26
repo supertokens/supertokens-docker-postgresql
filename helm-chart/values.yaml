@@ -9,6 +9,9 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# -- Use existing Secret in the same namespace. **NOTE** If specified, any `database` and `apiKeys` options are ignored.
+existingSecret: null
+
 database:
   # -- database name
   name: supertokens
