@@ -41,10 +41,14 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            {{- if .Values.database.schema }}
             - name: "POSTGRESQL_TABLE_SCHEMA"
               value: {{ quote .Values.database.schema }}
+            {{- end }}
+            {{- if .Values.database.connectionPoolSize }}
             - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
               value: {{ quote .Values.database.connectionPoolSize }}
+            {{- end }}
             - name: "SUPERTOKENS_PORT"
               value: {{ quote .Values.service.port }}
             - name: "ACCESS_TOKEN_VALIDITY"
