@@ -13,27 +13,27 @@ spec:
       {{- include "supertokens.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- if .Values.podAnnotations }}
+      {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "supertokens.selectorLabels" . | nindent 8 }}
     spec:
-      {{- if .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "supertokens.serviceAccountName" . }}
-      {{- if .Values.podSecurityContext }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}  
       containers:
         - name: {{ .Chart.Name }}
-          {{- if .Values.securityContext }}
+          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
           # {{ else }} 
           # securityContext:
           #   readOnlyRootFilesystem: true
@@ -41,10 +41,14 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            {{- if .Values.database.schema }}
             - name: "POSTGRESQL_TABLE_SCHEMA"
               value: {{ quote .Values.database.schema }}
+            {{- end }}
+            {{- if .Values.database.connectionPoolSize }}
             - name: "POSTGRESQL_CONNECTION_POOL_SIZE"
               value: {{ quote .Values.database.connectionPoolSize }}
+            {{- end }}
             - name: "SUPERTOKENS_PORT"
               value: {{ quote .Values.service.port }}
             - name: "ACCESS_TOKEN_VALIDITY"
@@ -80,19 +84,19 @@ spec:
               protocol: TCP
           livenessProbe: {{ .Values.livenessProbe | toYaml | nindent 12 }}
           readinessProbe: {{ .Values.readinessProbe | toYaml | nindent 12 }}
-          {{ if .Values.resources }}
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- end -}}
-      {{- if .Values.nodeSelector }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
-      {{- end -}}
-      {{- if .Values.affinity }}
+      {{- end }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-      {{- end -}}
-      {{- if .Values.tolerations }}
+      {{- end }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-      {{- end -}}
+      {{- end }}
