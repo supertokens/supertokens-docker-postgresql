@@ -1,63 +1,57 @@
 # supertokens
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.12.0](https://img.shields.io/badge/AppVersion-3.12.0-informational?style=flat-square)
+![Version: 0.1.2](https://img.shields.io/badge/Version-0.1.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.14.0](https://img.shields.io/badge/AppVersion-3.14.0-informational?style=flat-square)
 
 SuperTokens Core Deployment
-
-## Deployment
-
-The chart currently use external postgres servers.
-
-
-```bash
-  helm install supertokens . -n supertokens --create-namespace
-```
-
-
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| accessTokenBlacklisting | bool | `false` | If true, allows for immediate revocation of any access token. Keep in mind that setting this to true will result in a db query for each API call that requires authentication. |
+| accessTokenSigningKeyDynamic | bool | `true` | If this is set to true, the JWT (access token) signing key will change every fixed interval of time. |
+| accessTokenSigningKeyUpdateInterval | int | `168` | Time in hours for how frequently the JWT (access token) signing key will change. This value only makes sense if "accessTokenSigningKeyDynamic" is true. |
+| accessTokenValidity | int | `3600` | Time in seconds for how long an access token is valid for |
 | apiKeys.enabled | bool | `false` | enable the use of API Keys with supertokens-core |
 | apiKeys.keys | list | `[]` | list of API Keys to load and use with supertokens-core |
 | autoscaling.enabled | bool | `false` | enable autoscaling of replicas |
 | autoscaling.maxReplicas | int | `100` | maximum replica count when autoscaling |
 | autoscaling.minReplicas | int | `1` | minimal replica count when autoscaling |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | target CPU usage before autoscaling |
-| database.host | string | `"postgres"` | database host address |
+| basePath | string | `""` |  |
+| database.host | string | `"postgres.postgres"` | database host |
 | database.name | string | `"supertokens"` | database name |
-| database.password | string | `"supersecretpassword"` | database user password |
+| database.password | string | `"password"` | database password |
 | database.port | int | `5432` | database port |
-| database.user | string | `"supertokens"` | database username |
-| database.schema | string | `"supertokens"` | database schema |
-| database.connectionPoolSize | int | `5` | maximum postgres connection pool size |
-| accessTokenValidity | int | `3600` | Time in seconds for how long an access token is valid for |
-| accessTokenBlacklisting | bool | `false` | If true, allows for immediate revocation of any access token. Keep in mind that setting this to true will result in a db query for each API call that requires authentication. |
-| accessTokenSigningKeyDynamic | bool | `true` | If this is set to true, the JWT (access token) signing key will change every fixed interval of time. |
-| accessTokenSigningKeyUpdateInterval | int | `168` | Time in hours for how frequently the JWT (access token) signing key will change. This value only makes sense if "accessTokenSigningKeyDynamic" is true. |
-| refreshTokenValidity | int | `144000` | Time in mins for how long a refresh token is valid for. |
-| passwordResetTokenLifetime | int | `3600000` | Time in milli-seconds for how long a password reset token is valid for. |
+| database.user | string | `"postgres"` | database user  |
+| disableTelemetry | bool | `false` |  |
 | emailVerificationTokenLifetime | int | `86400000` | Time in milli-seconds for how long an email verification token is valid for. |
-| passwordlessMaxCodeInputAttempts | int | `5` | The maximum number of code input attempts per login before the user needs to restart. |
-| passwordlessCodeLifetime | int | `900000` | Time in milliseconds for how long a passwordless code is valid for. |
-| basePath | string | `""` | base api path |
-| disableTelemetry | bool | `false` | enable/disable telemetry |
-| maxServerPoolSize | int | `10` | maximum java server pool size |
+| existingSecret | string | `nil` | Use existing Secret in the same namespace. **NOTE** If specified, any `database` and `apiKeys` options are ignored. |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"supertokens/supertokens-postgresql"` | docker repository |
-| image.tag | string | `"3.12"` | Overrides the image tag whose default is the chart appVersion. |
+| image.repository | string | `"supertokens/supertokens-postgresql"` |  |
+| image.tag | string | `"3.14"` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
+| livenessProbe | object | See [values.yaml] | Configure liveness [probe] for the supertokens-core container |
+| maxServerPoolSize | int | `10` |  |
 | nameOverride | string | `""` |  |
+| passwordResetTokenLifetime | int | `3600000` | Time in milli-seconds for how long a password reset token is valid for. |
+| passwordlessCodeLifetime | int | `900000` | Time in milliseconds for how long a passwordless code is valid for. |
+| passwordlessMaxCodeInputAttempts | int | `5` | The maximum number of code input attempts per login before the user needs to restart. |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
+| readinessProbe | object | See [values.yaml] | Configure readiness [probe] for the supertokens-core container |
+| refreshTokenValidity | int | `144000` | Time in mins for how long a refresh token is valid for. |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` | limit and requests for resources for supertokens-core container |
 | securityContext | object | `{}` |  |
+| service.nodePort | string | `""` |  |
+| service.port | int | `3567` |  |
+| service.targetPort | int | `3567` |  |
+| service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.7.0](https://github.com/norwoodj/helm-docs/releases/v1.7.0)
+Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
