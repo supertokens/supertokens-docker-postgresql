@@ -194,6 +194,16 @@ then
         echo "totp_rate_limit_cooldown_sec: $TOTP_RATE_LIMIT_COOLDOWN_SEC" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $SUPERTOKENS_SAAS_SECRET ]
+    then
+        echo "supertokens_saas_secret: $SUPERTOKENS_SAAS_SECRET" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $SUPERTOKENS_DEFAULT_CDI_VERSION ]
+    then
+        echo "supertokens_default_cdi_version: $SUPERTOKENS_DEFAULT_CDI_VERSION" >> $CONFIG_FILE
+    fi
+
     # check if info log path is not passed
     if [ ! -z $INFO_LOG_PATH ]
     then
