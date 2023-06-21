@@ -15,7 +15,7 @@ RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	-H "api-version: 0"
 RUN unzip supertokens.zip
 RUN cd supertokens && ./install
-FROM debian:stable-slim
+FROM debian:bullseye-slim
 RUN groupadd supertokens && useradd -m -s /bin/bash -g supertokens supertokens
 RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
 ENV GOSU_VERSION 1.7

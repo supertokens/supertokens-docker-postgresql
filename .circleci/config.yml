@@ -6,7 +6,7 @@ orbs:
 jobs:
   publish:
     machine:
-      image: ubuntu-2004:2023.04.2
+      image: ubuntu-2004:202101-01
     environment:
       DOCKER_BUILDKIT: 1
       BUILDX_PLATFORMS: linux/amd64,linux/arm64
@@ -66,7 +66,7 @@ jobs:
       - slack/status
   test:
     machine:
-      image: ubuntu-2004:2023.04.2
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - jq/install
