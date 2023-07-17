@@ -199,9 +199,9 @@ then
         echo "supertokens_saas_secret: $SUPERTOKENS_SAAS_SECRET" >> $CONFIG_FILE
     fi
 
-    if [ ! -z $SUPERTOKENS_DEFAULT_CDI_VERSION ]
+    if [ ! -z $SUPERTOKENS_MAX_CDI_VERSION ]
     then
-        echo "supertokens_default_cdi_version: $SUPERTOKENS_DEFAULT_CDI_VERSION" >> $CONFIG_FILE
+        echo "supertokens_max_cdi_version: $SUPERTOKENS_MAX_CDI_VERSION" >> $CONFIG_FILE
     fi
 
     # check if info log path is not passed
