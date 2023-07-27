@@ -42,7 +42,7 @@ test_session_post () {
 no_of_containers_running_at_start=`no_of_running_containers`
 
 # start postgresql server
-docker run -e DISABLE_TELEMETRY=true --rm -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=root -e POSTGRES_USER=root postgres
+docker run -e DISABLE_TELEMETRY=true --rm -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=root -e POSTGRES_USER=root postgress@sha256:5a90725b3751c2c7ac311c9384dfc1a8f6e41823e341fb1dceed96a11677303a
 
 sleep 26s
 
