@@ -1,7 +1,7 @@
 FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
-ARG CORE_VERSION=6.0.11
+ARG CORE_VERSION=6.0.12
 ARG PLUGIN_VERSION=4.0.2
 RUN apt-get update && apt-get install -y curl zip
 RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
