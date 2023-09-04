@@ -6,7 +6,9 @@ ENV POSTGRESQL_CONNECTION_URI=$POSTGRESQL_CONNECTION_URI
 ARG POSTGRESQL_TABLE_NAMES_PREFIX
 ENV POSTGRESQL_TABLE_NAMES_PREFIX=$POSTGRESQL_TABLE_NAMES_PREFIX
 ARG PORT
-ENV PORT=$PORT
+ENV SUPERTOKENS_PORT=$PORT
+ARG RAILWAY_PRIVATE_DOMAIN
+ENV SUPERTOKENS_HOST=$RAILWAY_PRIVATE_DOMAIN
 
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
@@ -44,6 +46,5 @@ COPY --from=tmp --chown=supertokens /usr/bin/supertokens /usr/bin/supertokens
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN echo "$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')" >> /CONFIG_HASH
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
-EXPOSE 3567
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["supertokens", "start"]
