@@ -33,6 +33,15 @@ fi
 SUPERTOKENS_PORT=$PORT
 CONFIG_FILE=/usr/lib/supertokens/config.yaml
 CONFIG_MD5SUM="$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')"
+
+# Get the current value of DATABASE_URL
+database_url="$DATABASE_URL"
+
+# Use sed to replace "postgres" with "postgresql" and store the result in a new variable
+new_database_url="$(echo "$database_url" | sed 's/postgres/postgresql/')"
+
+# Export the updated value back to the environment variable
+export DATABASE_URL="$new_database_url"
 POSTGRESQL_CONNECTION_URI=$DATABASE_URL
 
 # if files have been shared using shared volumes, make sure the ownership of the
