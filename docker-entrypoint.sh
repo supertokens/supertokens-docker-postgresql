@@ -30,13 +30,14 @@ if [ "${1}" = 'dev' -o "${1}" = "production" -o "${1:0:2}" = "--" ]; then
         set -- "$@" --foreground
     fi
 fi
-
+SUPERTOKENS_PORT=$PORT
 CONFIG_FILE=/usr/lib/supertokens/config.yaml
 CONFIG_MD5SUM="$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')"
+POSTGRESQL_CONNECTION_URI=$DATABASE_URL
 
 # if files have been shared using shared volumes, make sure the ownership of the
 # /usr/lib/supertokens files still remains with supertokens user
-chown -R supertokens:supertokens /usr/lib/supertokens/
+# chown -R supertokens:supertokens /usr/lib/supertokens/
 
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
@@ -212,8 +213,8 @@ then
             touch $INFO_LOG_PATH
         fi
         # make sure supertokens user has write permission on the file
-        chown supertokens:supertokens $INFO_LOG_PATH
-        chmod +w $INFO_LOG_PATH
+        # chown supertokens:supertokens $INFO_LOG_PATH
+        # chmod +w $INFO_LOG_PATH
         echo "info_log_path: $INFO_LOG_PATH" >> $CONFIG_FILE
     else
         echo "info_log_path: null" >> $CONFIG_FILE
@@ -338,9 +339,11 @@ then
     set -- "$@" --foreground
 fi
 
+# Commented out because heroku does not allow running as root and we can't set the supertokens user
 # If container is started as root user, restart as dedicated supertokens user
-if [ "$(id -u)" = "0" ] && [ "$1" = 'supertokens' ]; then
-    exec gosu supertokens "$@"
-else
-    exec "$@"
-fi
+# if [ "$(id -u)" = "0" ] && [ "$1" = 'supertokens' ]; then
+#     exec gosu supertokens "$@"
+# else
+#     exec "$@"
+# fi
+exec "$@"

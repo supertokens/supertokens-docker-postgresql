@@ -1,4 +1,21 @@
+## Spill specific information
+
+The below is based on the Heroku tutorial which can be found [here](https://devcenter.heroku.com/articles/container-registry-and-runtime#cli)
+To deploy this image to Heroku the following steps should be followed:
+
+1. Build the image: `docker buildx build --platform linux/amd64 -t <some-tag> .` (This ensures that the image is built on the correct architecture. Heroku doesn't like images built to the M1 Mac specificaiton)
+2. Tag the image: `docker tag <some-tag> registry.heroku.com/<App Name>/web`
+3. Push the image to the Heroku registry: `docker push registry.heroku.com/<App Name>/web`
+4. Login to the Heroku cli (download it if you don't already have it)
+5. Release the image: `heroku container:release web -a <App Name>`
+6. Check that its running: `heroku open -a <App Name>`
+
+### WHy did we fork this repo?
+
+We have also made some changes to the `docker-entrypoint.sh` specifically around the ownership of file directories by the supertokens user. The command `chown -R supertokens:supertokens /usr/lib/supertokens/` on line 35 causes the container to crash. Our current workaround is to just comment out the line as done in this [issue](https://github.com/supertokens/supertokens-core/issues/354) raised last year
+
 ## Quickstart
+
 ```bash
 # This will start with an in memory database.
 
@@ -6,55 +23,57 @@ $ docker run -p 3567:3567 -d registry.supertokens.io/supertokens/supertokens-pos
 ```
 
 ## Configuration
-You can use your own `config.yaml` file as a shared volume or pass the key-values as environment variables. 
+
+You can use your own `config.yaml` file as a shared volume or pass the key-values as environment variables.
 
 If you do both, only the shared `config.yaml` file will be considered.
-  
+
 #### Using environment variables
+
 Available environment variables
+
 - **Core**
-	- API\_KEYS
-	- SUPERTOKENS\_HOST
-	- SUPERTOKENS\_PORT
-	- ACCESS\_TOKEN\_VALIDITY
-	- ACCESS\_TOKEN\_BLACKLISTING
-	- ACCESS\_TOKEN\_SIGNING\_KEY\_DYNAMIC
-	- ACCESS\_TOKEN\_DYNAMIC\_SIGNING\_KEY\_UPDATE\_INTERVAL
-	- REFRESH\_TOKEN\_VALIDITY
-	- PASSWORD\_RESET\_TOKEN\_LIFETIME
-	- EMAIL\_VERIFICATION\_TOKEN\_LIFETIME
-	- INFO\_LOG\_PATH
-	- ERROR\_LOG\_PATH
-    - MAX\_SERVER\_POOL\_SIZE
-	- PASSWORDLESS\_MAX\_CODE\_INPUT\_ATTEMPTS
-	- PASSWORDLESS\_CODE\_LIFETIME
-	- DISABLE\_TELEMETRY
-	- BASE\_PATH
-	- PASSWORD\_HASHING\_ALG
-	- ARGON2\_ITERATIONS
-	- ARGON2\_MEMORY\_KB
-	- ARGON2\_PARALLELISM
-	- ARGON2\_HASHING\_POOL\_SIZE
-	- BCRYPT\_LOG\_ROUNDS
-	- LOG\_LEVEL
-	- FIREBASE\_PASSWORD\_HASHING\_POOL\_SIZE
-	- FIREBASE\_PASSWORD\_HASHING\_SIGNER\_KEY
-	- IP\_ALLOW\_REGEX
-	- IP\_DENY\_REGEX
-	- TOTP\_MAX\_ATTEMPTS
-	- TOTP\_RATE\_LIMIT\_COOLDOWN\_SEC
+  - API_KEYS
+  - SUPERTOKENS_HOST
+  - SUPERTOKENS_PORT
+  - ACCESS_TOKEN_VALIDITY
+  - ACCESS_TOKEN_BLACKLISTING
+  - ACCESS_TOKEN_SIGNING_KEY_DYNAMIC
+  - ACCESS_TOKEN_DYNAMIC_SIGNING_KEY_UPDATE_INTERVAL
+  - REFRESH_TOKEN_VALIDITY
+  - PASSWORD_RESET_TOKEN_LIFETIME
+  - EMAIL_VERIFICATION_TOKEN_LIFETIME
+  - INFO_LOG_PATH
+  - ERROR_LOG_PATH
+    - MAX_SERVER_POOL_SIZE
+  - PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS
+  - PASSWORDLESS_CODE_LIFETIME
+  - DISABLE_TELEMETRY
+  - BASE_PATH
+  - PASSWORD_HASHING_ALG
+  - ARGON2_ITERATIONS
+  - ARGON2_MEMORY_KB
+  - ARGON2_PARALLELISM
+  - ARGON2_HASHING_POOL_SIZE
+  - BCRYPT_LOG_ROUNDS
+  - LOG_LEVEL
+  - FIREBASE_PASSWORD_HASHING_POOL_SIZE
+  - FIREBASE_PASSWORD_HASHING_SIGNER_KEY
+  - IP_ALLOW_REGEX
+  - IP_DENY_REGEX
+  - TOTP_MAX_ATTEMPTS
+  - TOTP_RATE_LIMIT_COOLDOWN_SEC
 - **POSTGRESQL:**
-	- POSTGRESQL\_CONNECTION\_URI
-	- POSTGRESQL\_USER
-	- POSTGRESQL\_PASSWORD
-	- POSTGRESQL\_PASSWORD\_FILE
-	- POSTGRESQL\_CONNECTION\_POOL\_SIZE
-	- POSTGRESQL\_HOST
-	- POSTGRESQL\_PORT
-	- POSTGRESQL\_DATABASE\_NAME
-	- POSTGRESQL\_TABLE\_NAMES\_PREFIX
-	- POSTGRESQL\_TABLE\_SCHEMA
-  
+  - POSTGRESQL_CONNECTION_URI
+  - POSTGRESQL_USER
+  - POSTGRESQL_PASSWORD
+  - POSTGRESQL_PASSWORD_FILE
+  - POSTGRESQL_CONNECTION_POOL_SIZE
+  - POSTGRESQL_HOST
+  - POSTGRESQL_PORT
+  - POSTGRESQL_DATABASE_NAME
+  - POSTGRESQL_TABLE_NAMES_PREFIX
+  - POSTGRESQL_TABLE_SCHEMA
 
 ```bash
 docker run \
@@ -74,6 +93,7 @@ docker run \
 ```
 
 #### Using custom config file
+
 - In your `config.yaml` file, please make sure you store the following key / values:
   - `core_config_version: 0`
   - `host: "0.0.0.0"`
@@ -90,10 +110,11 @@ docker run \
 ```
 
 ## Logging
+
 - By default, all the logs will be available via the `docker logs <container-name>` command.
 - You can setup logging to a shared volume by:
-	- Setting the `info_log_path` and `error_log_path` variables in your `config.yaml` file (or passing the values asn env variables).
-	- Mounting the shared volume for the logging directory.
+  - Setting the `info_log_path` and `error_log_path` variables in your `config.yaml` file (or passing the values asn env variables).
+  - Mounting the shared volume for the logging directory.
 
 ```bash
 docker run \
@@ -107,6 +128,7 @@ docker run \
 ```
 
 ## Database setup
+
 - Before you start this container, make sure to initialize your database.
 - You do not need to ensure that the Postgresql database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a Postgresql instance to be available.
 - If `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD`, `POSTGRESQL_PASSWORD_FILE` and `POSTGRESQL_CONNECTION_URI` are not provided, then SuperTokens will use an in memory database.
