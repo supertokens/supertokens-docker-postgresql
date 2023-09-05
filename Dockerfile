@@ -2,7 +2,7 @@ FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
 ARG CORE_VERSION=4.6.1
-ARG PLUGIN_VERSION=2.4.0
+ARG PLUGIN_VERSION=2.4.1
 RUN apt-get update && apt-get install -y curl zip
 RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	case "${dpkgArch##*-}" in \
