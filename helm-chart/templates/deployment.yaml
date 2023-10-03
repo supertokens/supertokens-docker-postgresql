@@ -50,7 +50,7 @@ spec:
               value: {{ quote .Values.database.connectionPoolSize }}
             {{- end }}
             - name: "SUPERTOKENS_PORT"
-              value: {{ quote .Values.service.port }}
+              value: {{ quote .Values.service.targetPort }}
             - name: "ACCESS_TOKEN_VALIDITY"
               value: {{ quote .Values.accessTokenValidity }}
             - name: "ACCESS_TOKEN_BLACKLISTING"
