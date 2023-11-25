@@ -13,6 +13,8 @@ fullnameOverride: ""
 existingSecret: null
 
 database:
+  # -- database uri (connection string), used instaed of other params if not empty
+  uri: ""
   # -- database name
   name: supertokens
   # -- database port
