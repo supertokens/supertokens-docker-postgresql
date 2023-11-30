@@ -19,6 +19,7 @@ SuperTokens Core Deployment
 | autoscaling.minReplicas | int | `1` | minimal replica count when autoscaling |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | target CPU usage before autoscaling |
 | basePath | string | `""` |  |
+| database.uri | string | `""` | database uri (connection string), used instead of other DB params if not empty |
 | database.host | string | `"postgres.postgres"` | database host |
 | database.name | string | `"supertokens"` | database name |
 | database.password | string | `"password"` | database password |
