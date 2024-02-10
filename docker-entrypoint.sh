@@ -330,6 +330,21 @@ then
         echo "postgresql_thirdparty_users_table_name: $POSTGRESQL_THIRDPARTY_USERS_TABLE_NAME" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $POSTGRESQL_IDLE_CONNECTION_TIMEOUT ]
+    then
+        echo "postgresql_idle_connection_timeout: $POSTGRESQL_IDLE_CONNECTION_TIMEOUT" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $POSTGRESQL_MINIMUM_IDLE_CONNECTIONS ]
+    then
+        echo "postgresql_minimum_idle_connections: $POSTGRESQL_MINIMUM_IDLE_CONNECTIONS" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $SUPERTOKENS_SAAS_LOAD_ONLY_CUD ]
+    then
+        echo "supertokens_saas_load_only_cud: $SUPERTOKENS_SAAS_LOAD_ONLY_CUD" >> $CONFIG_FILE
+    fi
+
 fi
 
 # check if no options has been passed to docker run
