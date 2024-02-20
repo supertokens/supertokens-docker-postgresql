@@ -1,8 +1,8 @@
 FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
-ARG CORE_VERSION=5.0.2
-ARG PLUGIN_VERSION=3.0.0
+ARG CORE_VERSION=5.0.3
+ARG PLUGIN_VERSION=3.0.1
 RUN apt-get update && apt-get install -y curl zip
 RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	case "${dpkgArch##*-}" in \
@@ -15,7 +15,7 @@ RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	-H "api-version: 0"
 RUN unzip supertokens.zip
 RUN cd supertokens && ./install
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 RUN groupadd supertokens && useradd -m -s /bin/bash -g supertokens supertokens
 RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
 ENV GOSU_VERSION 1.7
