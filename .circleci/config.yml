@@ -26,7 +26,7 @@ jobs:
       - run:
           name: core version tag
           command: |
-            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
+            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
             git push origin :refs/tags/${CORE_VERSION}
             git fetch --prune --prune-tags
             git tag ${CORE_VERSION}
@@ -37,8 +37,13 @@ jobs:
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
             docker buildx create --name multiarch --driver docker-container --use
             docker buildx inspect --bootstrap
-            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
-            docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:${CORE_VERSION} -o type=image,push=true .
+            CORE_VERSION_WITH_PATCH=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
+            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
+            if [ "$CORE_VERSION" != "$CORE_VERSION_WITH_PATCH" ]; then
+              docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:${CORE_VERSION} -t supertokens/supertokens-postgresql:${CORE_VERSION_WITH_PATCH} -o type=image,push=true .
+            else
+              docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:${CORE_VERSION} -o type=image,push=true .
+            fi
       - run:
           name: check if is latest core and plugin
           command: |
@@ -86,7 +91,7 @@ workflows:
             - docker-hub
           filters:
             tags:
-              only: /v[0-9]+(\.[0-9]+)*/   
+              only: /v[0-9]+(\.[0-9]+)*/
             branches:
               ignore: /.*/
       - test:
