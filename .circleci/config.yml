@@ -39,11 +39,7 @@ jobs:
             docker buildx inspect --bootstrap
             CORE_VERSION_WITH_PATCH=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
             CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
-            if [ "$CORE_VERSION" != "$CORE_VERSION_WITH_PATCH" ]; then
-              docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:${CORE_VERSION} -t supertokens/supertokens-postgresql:${CORE_VERSION_WITH_PATCH} -o type=image,push=true .
-            else
-              docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:${CORE_VERSION} -o type=image,push=true .
-            fi
+            docker buildx build --platform $BUILDX_PLATFORMS -t supertokens/supertokens-postgresql:${CORE_VERSION} -t supertokens/supertokens-postgresql:${CORE_VERSION_WITH_PATCH} -o type=image,push=true .
       - run:
           name: check if is latest core and plugin
           command: |
