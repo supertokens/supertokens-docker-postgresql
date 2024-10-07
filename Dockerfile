@@ -36,5 +36,6 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN echo "$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')" >> /CONFIG_HASH
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 EXPOSE 3567
+USER "supertokens"
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["supertokens", "start"]
