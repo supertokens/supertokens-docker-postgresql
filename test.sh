@@ -60,7 +60,7 @@ test_signin_post () {
     }' -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
-        printf "\x1b[1;31merror\xd1b[0m from test_signup_post in $message\n"
+        printf "\x1b[1;31merror\xd1b[0m from test_signin_post in $message\n"
         exit 1
     fi
 }
