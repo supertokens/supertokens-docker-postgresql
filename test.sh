@@ -226,7 +226,7 @@ docker rm supertokens -f
 
 #---------------------------------------------------
 # test --read-only ARGON2
-docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI -e PASSWORD_HASHING_ALG=ARGON2  --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db --read-only
+docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI -e PASSWORD_HASHING_ALG=ARGON2  --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
 
 sleep 17s
 
