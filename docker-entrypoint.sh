@@ -33,22 +33,19 @@ fi
 
 CONFIG_FILE=/usr/lib/supertokens/config.yaml
 TEMP_LOCATION_WHEN_READONLY=/lib/supertokens/temp/
+mkdir -p $TEMP_LOCATION_WHEN_READONLY
 CONFIG_MD5SUM="$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')"
 
-#if it contains the readonly param, make that temp dir a temp dir for java io too
-if [[ "$*" == *--read-only* ]]
-then
-  #required by JNA
-  export _JAVA_OPTIONS=-Djava.io.tmpdir=$TEMP_LOCATION_WHEN_READONLY
+# always assuming read-only
 
-  #changing where the config file is written
-  ORIGINAL_CONFIG=$CONFIG_FILE
-  CONFIG_FILE="${TEMP_LOCATION_WHEN_READONLY}/config.yaml"
-  cat $ORIGINAL_CONFIG >> $CONFIG_FILE
-
-  #make sure the CLI knows which config file to pass to the core
-  set -- "$@" --with-config="$CONFIG_FILE" --with-temp-dir="$TEMP_LOCATION_WHEN_READONLY" --foreground
-fi
+#changing where the config file is written
+ORIGINAL_CONFIG=$CONFIG_FILE
+CONFIG_FILE="${TEMP_LOCATION_WHEN_READONLY}config.yaml"
+cat $ORIGINAL_CONFIG >> $CONFIG_FILE
+#required by JNA
+export _JAVA_OPTIONS=-Djava.io.tmpdir=$TEMP_LOCATION_WHEN_READONLY
+#make sure the CLI knows which config file to pass to the core
+set -- "$@" --with-config="$CONFIG_FILE" --with-temp-dir="$TEMP_LOCATION_WHEN_READONLY" --foreground
 
 
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
