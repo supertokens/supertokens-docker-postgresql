@@ -32,17 +32,27 @@ if [ "${1}" = 'dev' -o "${1}" = "production" -o "${1:0:2}" = "--" ]; then
 fi
 
 CONFIG_FILE=/usr/lib/supertokens/config.yaml
+TEMP_LOCATION_WHEN_READONLY=/lib/supertokens/temp/
+mkdir -p $TEMP_LOCATION_WHEN_READONLY
 CONFIG_MD5SUM="$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')"
 
-# if files have been shared using shared volumes, make sure the ownership of the
-# /usr/lib/supertokens files still remains with supertokens user
-chown -R supertokens:supertokens /usr/lib/supertokens/
+# always assuming read-only
+
+#changing where the config file is written
+ORIGINAL_CONFIG=$CONFIG_FILE
+CONFIG_FILE="${TEMP_LOCATION_WHEN_READONLY}config.yaml"
+cat $ORIGINAL_CONFIG >> $CONFIG_FILE
+#required by JNA
+export _JAVA_OPTIONS=-Djava.io.tmpdir=$TEMP_LOCATION_WHEN_READONLY
+#make sure the CLI knows which config file to pass to the core
+set -- "$@" --with-config="$CONFIG_FILE" --with-temp-dir="$TEMP_LOCATION_WHEN_READONLY" --foreground
+
 
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
-
     echo "" >> $CONFIG_FILE
     echo "host: 0.0.0.0" >> $CONFIG_FILE
+    echo "postgresql_config_version: 0" >> $CONFIG_FILE
 
     # verify api keys are passed
     if [ ! -z $API_KEYS ]
@@ -211,9 +221,6 @@ then
         then
             touch $INFO_LOG_PATH
         fi
-        # make sure supertokens user has write permission on the file
-        chown supertokens:supertokens $INFO_LOG_PATH
-        chmod +w $INFO_LOG_PATH
         echo "info_log_path: $INFO_LOG_PATH" >> $CONFIG_FILE
     else
         echo "info_log_path: null" >> $CONFIG_FILE
@@ -226,9 +233,6 @@ then
         then
             touch $ERROR_LOG_PATH
         fi
-        # make sure supertokens user has write permission on the file
-        chown supertokens:supertokens $ERROR_LOG_PATH
-        chmod +w $ERROR_LOG_PATH
         echo "error_log_path: $ERROR_LOG_PATH" >> $CONFIG_FILE
     else
         echo "error_log_path: null" >> $CONFIG_FILE
@@ -350,8 +354,9 @@ fi
 # check if no options has been passed to docker run
 if [[ "$@" == "supertokens start" ]]
 then
-    set -- "$@" --foreground
+    set -- "$@" --with-config="$CONFIG_FILE" --foreground
 fi
+
 
 # If container is started as root user, restart as dedicated supertokens user
 if [ "$(id -u)" = "0" ] && [ "$1" = 'supertokens' ]; then
