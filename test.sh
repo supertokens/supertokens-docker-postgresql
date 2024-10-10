@@ -205,7 +205,7 @@ fi
 
 docker rm supertokens -f
 
-rm -rf $PWD/sthome
+sudo rm -rf $PWD/sthome
 git checkout $PWD/config.yaml
 
 #---------------------------------------------------
