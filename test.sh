@@ -183,7 +183,12 @@ docker rm supertokens -f
 
 # ---------------------------------------------------
 # test info path
-docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -v $PWD:/home/supertokens -e POSTGRESQL_USER=root -e POSTGRESQL_PASSWORD=root -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
+
+#making sure the user in the container has rights to write to the mounted volume
+mkdir $PWD/sthome
+chmod a+rw sthome
+
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -v $PWD/sthome/:/home/supertokens -e POSTGRESQL_USER=root -e POSTGRESQL_PASSWORD=root -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db
 
 sleep 17s
 
@@ -200,8 +205,7 @@ fi
 
 docker rm supertokens -f
 
-rm -rf $PWD/info.log
-rm -rf $PWD/error.log
+rm -rf $PWD/sthome
 git checkout $PWD/config.yaml
 
 #---------------------------------------------------
