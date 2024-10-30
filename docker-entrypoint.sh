@@ -349,6 +349,31 @@ then
         echo "supertokens_saas_load_only_cud: $SUPERTOKENS_SAAS_LOAD_ONLY_CUD" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $OAUTH_PROVIDER_PUBLIC_SERVICE_URL ]
+    then
+        echo "oauth_provider_public_service_url: $OAUTH_PROVIDER_PUBLIC_SERVICE_URL" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $OAUTH_PROVIDER_ADMIN_SERVICE_URL ]
+    then
+        echo "oauth_provider_admin_service_url: $OAUTH_PROVIDER_ADMIN_SERVICE_URL" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $OAUTH_PROVIDER_CONSENT_LOGIN_BASE_URL ]
+    then
+        echo "oauth_provider_consent_login_base_url: $OAUTH_PROVIDER_CONSENT_LOGIN_BASE_URL" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $OAUTH_PROVIDER_URL_CONFIGURED_IN_OAUTH_PROVIDER ]
+    then
+        echo "oauth_provider_url_configured_in_oauth_provider: $OAUTH_PROVIDER_URL_CONFIGURED_IN_OAUTH_PROVIDER" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $OAUTH_CLIENT_SECRET_ENCRYPTION_KEY ]
+    then
+        echo "oauth_client_secret_encryption_key: $OAUTH_CLIENT_SECRET_ENCRYPTION_KEY" >> $CONFIG_FILE
+    fi
+
 fi
 
 # check if no options has been passed to docker run
