@@ -375,8 +375,8 @@ then
     fi
 
     if [ ! -z $BULK_MIGRATION_PARALLELISM ]
-        then
-            echo "bulk_migration_parallelism: $BULK_MIGRATION_PARALLELISM" >> $CONFIG_FILE
+    then
+        echo "bulk_migration_parallelism: $BULK_MIGRATION_PARALLELISM" >> $CONFIG_FILE
     fi
 
 fi
