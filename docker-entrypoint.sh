@@ -374,6 +374,11 @@ then
         echo "oauth_client_secret_encryption_key: $OAUTH_CLIENT_SECRET_ENCRYPTION_KEY" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $BULK_MIGRATION_PARALLELISM ]
+        then
+            echo "bulk_migration_parallelism: $BULK_MIGRATION_PARALLELISM" >> $CONFIG_FILE
+    fi
+
 fi
 
 # check if no options has been passed to docker run
