@@ -379,6 +379,11 @@ then
         echo "bulk_migration_parallelism: $BULK_MIGRATION_PARALLELISM" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME ]
+        then
+            echo "webauthn_recover_account_token_lifetime: $WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME" >> $CONFIG_FILE
+    fi
+
 fi
 
 # check if no options has been passed to docker run
