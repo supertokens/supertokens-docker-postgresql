@@ -380,7 +380,7 @@ then
     fi
 
     if [ ! -z $WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME ]
-        then
+    then
             echo "webauthn_recover_account_token_lifetime: $WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME" >> $CONFIG_FILE
     fi
 
