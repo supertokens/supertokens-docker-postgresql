@@ -379,6 +379,11 @@ then
         echo "bulk_migration_parallelism: $BULK_MIGRATION_PARALLELISM" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $BULK_MIGRATION_BATCH_SIZE ]
+    then
+        echo "bulk_migration_batch_size: $BULK_MIGRATION_BATCH_SIZE" >> $CONFIG_FILE
+    fi
+
     if [ ! -z $WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME ]
     then
             echo "webauthn_recover_account_token_lifetime: $WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME" >> $CONFIG_FILE
