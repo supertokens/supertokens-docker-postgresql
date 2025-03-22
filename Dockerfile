@@ -1,8 +1,8 @@
 FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
-ARG CORE_VERSION=10.1.0
-ARG PLUGIN_VERSION=8.1.0
+ARG CORE_VERSION=10.1.1
+ARG PLUGIN_VERSION=8.1.1
 RUN apt-get update && apt-get install -y curl zip
 RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	case "${dpkgArch##*-}" in \
@@ -17,7 +17,8 @@ RUN unzip supertokens.zip
 RUN cd supertokens && ./install
 FROM debian:bookworm-slim
 RUN groupadd supertokens && useradd -m -s /bin/bash -g supertokens supertokens
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr curl && rm -rf /var/lib/apt/lists/*
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 ENV GOSU_VERSION 1.7
 RUN set -x \
 	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
@@ -29,7 +30,7 @@ RUN set -x \
 	&& gpgconf --kill all \
 	&& rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu \
-	&& apt-get purge -y --auto-remove ca-certificates wget
+	&& apt-get purge -y --auto-remove wget
 COPY --from=tmp --chown=supertokens /usr/lib/supertokens /usr/lib/supertokens
 COPY --from=tmp --chown=supertokens /usr/bin/supertokens /usr/bin/supertokens
 COPY docker-entrypoint.sh /usr/local/bin/
