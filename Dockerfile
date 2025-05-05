@@ -34,9 +34,6 @@ RUN set -x \
 COPY --from=tmp --chown=supertokens /usr/lib/supertokens /usr/lib/supertokens
 COPY --from=tmp --chown=supertokens /usr/bin/supertokens /usr/bin/supertokens
 COPY docker-entrypoint.sh /usr/local/bin/
-RUN sysctl -w net.ipv4.tcp_keepalive_time=60 && \
-    sysctl -w net.ipv4.tcp_keepalive_intvl=5 && \
-    sysctl -w net.ipv4.tcp_keepalive_probes=3
 RUN echo "$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')" >> /CONFIG_HASH
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 EXPOSE 3567
