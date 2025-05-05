@@ -145,3 +145,13 @@ docker run \
 	--read-only \
 	-d registry.supertokens.io/supertokens/supertokens-postgresql
 ```
+
+## Running with tcp keepalive settings
+```bash
+docker run \
+	-p 3567:3567 \
+	--sysctl net.ipv4.tcp_keepalive_time=60 \
+	--sysctl net.ipv4.tcp_keepalive_intvl=5 \
+	--sysctl net.ipv4.tcp_keepalive_probes=3 \
+	-d registry.supertokens.io/supertokens/supertokens-postgresql
+```
