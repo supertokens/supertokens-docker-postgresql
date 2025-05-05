@@ -1,8 +1,8 @@
 FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=postgresql
 ARG PLAN_TYPE=FREE
-ARG CORE_VERSION=10.1.3
-ARG PLUGIN_VERSION=8.1.2
+ARG CORE_VERSION=10.1.4
+ARG PLUGIN_VERSION=8.1.3
 RUN apt-get update && apt-get install -y curl zip
 RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	case "${dpkgArch##*-}" in \
@@ -34,6 +34,9 @@ RUN set -x \
 COPY --from=tmp --chown=supertokens /usr/lib/supertokens /usr/lib/supertokens
 COPY --from=tmp --chown=supertokens /usr/bin/supertokens /usr/bin/supertokens
 COPY docker-entrypoint.sh /usr/local/bin/
+RUN sysctl -w net.ipv4.tcp_keepalive_time=60 && \
+    sysctl -w net.ipv4.tcp_keepalive_intvl=5 && \
+    sysctl -w net.ipv4.tcp_keepalive_probes=3
 RUN echo "$(md5sum /usr/lib/supertokens/config.yaml | awk '{ print $1 }')" >> /CONFIG_HASH
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
 EXPOSE 3567
