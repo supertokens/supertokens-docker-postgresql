@@ -250,6 +250,12 @@ then
         echo "disable_telemetry: $DISABLE_TELEMETRY" >> $CONFIG_FILE
     fi
 
+    # check if the otel collector connection uri is passed
+    if [ ! -z $OTEL_COLLECTOR_CONNECTION_URI ]
+    then
+        echo "otel_collector_connection_uri: $OTEL_COLLECTOR_CONNECTION_URI" >> $CONFIG_FILE
+    fi
+
     # check if max server pool size is passed
     if [ ! -z $POSTGRESQL_CONNECTION_POOL_SIZE ]
     then
