@@ -7,67 +7,70 @@ $ docker run -p 3567:3567 -d registry.supertokens.io/supertokens/supertokens-pos
 ```
 
 ## Configuration
-You can use your own `config.yaml` file as a shared volume or pass the key-values as environment variables. 
+
+You can use your own `config.yaml` file as a shared volume or pass the key-values as environment variables.
 
 If you do both, only the shared `config.yaml` file will be considered.
-  
+
 #### Using environment variables
+
 Available environment variables
+
 - **Core**
-	- API\_KEYS
-	- SUPERTOKENS\_HOST
-	- SUPERTOKENS\_PORT
-	- ACCESS\_TOKEN\_VALIDITY
-	- ACCESS\_TOKEN\_BLACKLISTING
-	- ACCESS\_TOKEN\_SIGNING\_KEY\_DYNAMIC
-	- ACCESS\_TOKEN\_DYNAMIC\_SIGNING\_KEY\_UPDATE\_INTERVAL
-	- REFRESH\_TOKEN\_VALIDITY
-	- PASSWORD\_RESET\_TOKEN\_LIFETIME
-	- EMAIL\_VERIFICATION\_TOKEN\_LIFETIME
-	- INFO\_LOG\_PATH
-	- ERROR\_LOG\_PATH
-    - MAX\_SERVER\_POOL\_SIZE
-	- PASSWORDLESS\_MAX\_CODE\_INPUT\_ATTEMPTS
-	- PASSWORDLESS\_CODE\_LIFETIME
-	- DISABLE\_TELEMETRY
-	- BASE\_PATH
-	- PASSWORD\_HASHING\_ALG
-	- ARGON2\_ITERATIONS
-	- ARGON2\_MEMORY\_KB
-	- ARGON2\_PARALLELISM
-	- ARGON2\_HASHING\_POOL\_SIZE
-	- BCRYPT\_LOG\_ROUNDS
-	- LOG\_LEVEL
-	- FIREBASE\_PASSWORD\_HASHING\_POOL\_SIZE
-	- FIREBASE\_PASSWORD\_HASHING\_SIGNER\_KEY
-	- IP\_ALLOW\_REGEX
-	- IP\_DENY\_REGEX
-	- TOTP\_MAX\_ATTEMPTS
-	- TOTP\_RATE\_LIMIT\_COOLDOWN\_SEC
-	- SUPERTOKENS\_SAAS\_LOAD\_ONLY\_CUD
-	- OAUTH\_PROVIDER\_PUBLIC\_SERVICE\_URL
-	- OAUTH\_PROVIDER\_ADMIN\_SERVICE\_URL
-	- OAUTH\_PROVIDER\_CONSENT\_LOGIN\_BASE\_URL
-	- OAUTH\_PROVIDER\_URL\_CONFIGURED\_IN\_OAUTH\_PROVIDER
-	- OAUTH\_CLIENT\_SECRET\_ENCRYPTION\_KEY
-	- BULK\_MIGRATION\_PARALLELISM
-	- BULK\_MIGRATION\_BATCH\_SIZE
-	- BULK\_MIGRATION\_CRON\_ENABLED
-	- WEBAUTHN\_RECOVER\_ACCOUNT\_TOKEN\_LIFETIME
+  - API_KEYS
+  - SUPERTOKENS_HOST
+  - SUPERTOKENS_PORT
+  - ACCESS_TOKEN_VALIDITY
+  - ACCESS_TOKEN_BLACKLISTING
+  - ACCESS_TOKEN_SIGNING_KEY_DYNAMIC
+  - ACCESS_TOKEN_DYNAMIC_SIGNING_KEY_UPDATE_INTERVAL
+  - REFRESH_TOKEN_VALIDITY
+  - PASSWORD_RESET_TOKEN_LIFETIME
+  - EMAIL_VERIFICATION_TOKEN_LIFETIME
+  - INFO_LOG_PATH
+  - ERROR_LOG_PATH
+  - MAX_SERVER_POOL_SIZE
+  - PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS
+  - PASSWORDLESS_CODE_LIFETIME
+  - DISABLE_TELEMETRY
+  - OTEL_COLLECTOR_CONNECTION_URI
+  - BASE_PATH
+  - PASSWORD_HASHING_ALG
+  - ARGON2_ITERATIONS
+  - ARGON2_MEMORY_KB
+  - ARGON2_PARALLELISM
+  - ARGON2_HASHING_POOL_SIZE
+  - BCRYPT_LOG_ROUNDS
+  - LOG_LEVEL
+  - FIREBASE_PASSWORD_HASHING_POOL_SIZE
+  - FIREBASE_PASSWORD_HASHING_SIGNER_KEY
+  - IP_ALLOW_REGEX
+  - IP_DENY_REGEX
+  - TOTP_MAX_ATTEMPTS
+  - TOTP_RATE_LIMIT_COOLDOWN_SEC
+  - SUPERTOKENS_SAAS_LOAD_ONLY_CUD
+  - OAUTH_PROVIDER_PUBLIC_SERVICE_URL
+  - OAUTH_PROVIDER_ADMIN_SERVICE_URL
+  - OAUTH_PROVIDER_CONSENT_LOGIN_BASE_URL
+  - OAUTH_PROVIDER_URL_CONFIGURED_IN_OAUTH_PROVIDER
+  - OAUTH_CLIENT_SECRET_ENCRYPTION_KEY
+  - BULK_MIGRATION_PARALLELISM
+  - BULK_MIGRATION_BATCH_SIZE
+  - BULK_MIGRATION_CRON_ENABLED
+  - WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME
 - **POSTGRESQL:**
-	- POSTGRESQL\_CONNECTION\_URI
-	- POSTGRESQL\_USER
-	- POSTGRESQL\_PASSWORD
-	- POSTGRESQL\_PASSWORD\_FILE
-	- POSTGRESQL\_CONNECTION\_POOL\_SIZE
-	- POSTGRESQL\_HOST
-	- POSTGRESQL\_PORT
-	- POSTGRESQL\_DATABASE\_NAME
-	- POSTGRESQL\_TABLE\_NAMES\_PREFIX
-	- POSTGRESQL\_TABLE\_SCHEMA
-	- POSTGRESQL\_IDLE\_CONNECTION\_TIMEOUT
-	- POSTGRESQL\_MINIMUM\_IDLE\_CONNECTIONS
-  
+  - POSTGRESQL_CONNECTION_URI
+  - POSTGRESQL_USER
+  - POSTGRESQL_PASSWORD
+  - POSTGRESQL_PASSWORD_FILE
+  - POSTGRESQL_CONNECTION_POOL_SIZE
+  - POSTGRESQL_HOST
+  - POSTGRESQL_PORT
+  - POSTGRESQL_DATABASE_NAME
+  - POSTGRESQL_TABLE_NAMES_PREFIX
+  - POSTGRESQL_TABLE_SCHEMA
+  - POSTGRESQL_IDLE_CONNECTION_TIMEOUT
+  - POSTGRESQL_MINIMUM_IDLE_CONNECTIONS
 
 ```bash
 docker run \
@@ -87,6 +90,7 @@ docker run \
 ```
 
 #### Using custom config file
+
 - In your `config.yaml` file, please make sure you store the following key / values:
   - `core_config_version: 0`
   - `host: "0.0.0.0"`
@@ -103,10 +107,11 @@ docker run \
 ```
 
 ## Logging
+
 - By default, all the logs will be available via the `docker logs <container-name>` command.
 - You can setup logging to a shared volume by:
-	- Setting the `info_log_path` and `error_log_path` variables in your `config.yaml` file (or passing the values asn env variables).
-	- Mounting the shared volume for the logging directory.
+  - Setting the `info_log_path` and `error_log_path` variables in your `config.yaml` file (or passing the values asn env variables).
+  - Mounting the shared volume for the logging directory.
 
 ```bash
 docker run \
@@ -120,12 +125,13 @@ docker run \
 ```
 
 ## Database setup
+
 - Before you start this container, make sure to initialize your database.
 - You do not need to ensure that the Postgresql database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a Postgresql instance to be available.
 - If `POSTGRESQL_USER`, `POSTGRESQL_PASSWORD`, `POSTGRESQL_PASSWORD_FILE` and `POSTGRESQL_CONNECTION_URI` are not provided, then SuperTokens will use an in memory database.
 
-
 ## Read-only root fs
+
 - If you wish to run this container with a read-only root filesystem, you can do so.
 - The container still needs a temp area, where it can write its stuff, and also needs to be able to execute from there.
 - You will have to create a mount for `/lib/supertokens/temp/`
@@ -147,6 +153,7 @@ docker run \
 ```
 
 ## Running with tcp keepalive settings
+
 ```bash
 docker run \
 	-p 3567:3567 \
