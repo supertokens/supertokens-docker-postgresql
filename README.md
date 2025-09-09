@@ -1,3 +1,9 @@
+# THIS REPOSITORY IS DEPRECATED AND NO LONGER MAINTAINED.
+
+# PLEASE USE THE OFFICIAL SUPERTOKENS POSTGRESQL PLUGIN INSTEAD:
+
+https://github.com/supertokens/supertokens-postgresql-plugin/tree/master/.github/helpers/docker
+
 ## Quickstart
 
 ```bash
