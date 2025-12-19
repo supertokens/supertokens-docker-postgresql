@@ -57,14 +57,15 @@ spec:
               value: {{ quote .Values.accessTokenBlacklisting }}
             - name: "ACCESS_TOKEN_SIGNING_KEY_DYNAMIC"
               value: {{ quote .Values.accessTokenSigningKeyDynamic }}
-            - name: "ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL"
+            - name: "ACCESS_TOKEN_DYNAMIC_SIGNING_KEY_UPDATE_INTERVAL"
               value: {{ quote .Values.accessTokenSigningKeyUpdateInterval }}
             - name: "REFRESH_TOKEN_VALIDITY"
               value: {{ quote .Values.refreshTokenValidity }}
+            # Use printf with int64 to avoid scientific notation (e.g., 3.6e+06)
             - name: "PASSWORD_RESET_TOKEN_LIFETIME"
-              value: {{ quote .Values.passwordResetTokenLifetime }}
+              value: {{ printf "%d" (int64 .Values.passwordResetTokenLifetime) | quote }}
             - name: "EMAIL_VERIFICATION_TOKEN_LIFETIME"
-              value: {{ quote .Values.emailVerificationTokenLifetime }}
+              value: {{ printf "%d" (int64 .Values.emailVerificationTokenLifetime) | quote }}
             - name: "PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS"
               value: {{ quote .Values.passwordlessMaxCodeInputAttempts }}
             - name: "PASSWORDLESS_CODE_LIFETIME"
@@ -75,6 +76,110 @@ spec:
               value: {{ quote .Values.disableTelemetry }}
             - name: "MAX_SERVER_POOL_SIZE"
               value: {{ quote .Values.maxServerPoolSize }}
+            {{- if .Values.logLevel }}
+            - name: "LOG_LEVEL"
+              value: {{ quote .Values.logLevel }}
+            {{- end }}
+            {{- if .Values.passwordHashingAlg }}
+            - name: "PASSWORD_HASHING_ALG"
+              value: {{ quote .Values.passwordHashingAlg }}
+            {{- end }}
+            {{- if .Values.argon2.iterations }}
+            - name: "ARGON2_ITERATIONS"
+              value: {{ quote .Values.argon2.iterations }}
+            {{- end }}
+            {{- if .Values.argon2.memoryKb }}
+            - name: "ARGON2_MEMORY_KB"
+              value: {{ quote .Values.argon2.memoryKb }}
+            {{- end }}
+            {{- if .Values.argon2.parallelism }}
+            - name: "ARGON2_PARALLELISM"
+              value: {{ quote .Values.argon2.parallelism }}
+            {{- end }}
+            {{- if .Values.argon2.hashingPoolSize }}
+            - name: "ARGON2_HASHING_POOL_SIZE"
+              value: {{ quote .Values.argon2.hashingPoolSize }}
+            {{- end }}
+            {{- if .Values.bcryptLogRounds }}
+            - name: "BCRYPT_LOG_ROUNDS"
+              value: {{ quote .Values.bcryptLogRounds }}
+            {{- end }}
+            {{- if .Values.ipAllowRegex }}
+            - name: "IP_ALLOW_REGEX"
+              value: {{ quote .Values.ipAllowRegex }}
+            {{- end }}
+            {{- if .Values.ipDenyRegex }}
+            - name: "IP_DENY_REGEX"
+              value: {{ quote .Values.ipDenyRegex }}
+            {{- end }}
+            {{- if .Values.totp.maxAttempts }}
+            - name: "TOTP_MAX_ATTEMPTS"
+              value: {{ quote .Values.totp.maxAttempts }}
+            {{- end }}
+            {{- if .Values.totp.rateLimitCooldownSec }}
+            - name: "TOTP_RATE_LIMIT_COOLDOWN_SEC"
+              value: {{ quote .Values.totp.rateLimitCooldownSec }}
+            {{- end }}
+            {{- if .Values.database.tableNamesPrefix }}
+            - name: "POSTGRESQL_TABLE_NAMES_PREFIX"
+              value: {{ quote .Values.database.tableNamesPrefix }}
+            {{- end }}
+            {{- if .Values.database.idleConnectionTimeout }}
+            - name: "POSTGRESQL_IDLE_CONNECTION_TIMEOUT"
+              value: {{ quote .Values.database.idleConnectionTimeout }}
+            {{- end }}
+            {{- if .Values.database.minimumIdleConnections }}
+            - name: "POSTGRESQL_MINIMUM_IDLE_CONNECTIONS"
+              value: {{ quote .Values.database.minimumIdleConnections }}
+            {{- end }}
+            {{- if .Values.infoLogPath }}
+            - name: "INFO_LOG_PATH"
+              value: {{ quote .Values.infoLogPath }}
+            {{- end }}
+            {{- if .Values.errorLogPath }}
+            - name: "ERROR_LOG_PATH"
+              value: {{ quote .Values.errorLogPath }}
+            {{- end }}
+            {{- if .Values.firebase.passwordHashingSignerKey }}
+            - name: "FIREBASE_PASSWORD_HASHING_SIGNER_KEY"
+              value: {{ quote .Values.firebase.passwordHashingSignerKey }}
+            {{- end }}
+            {{- if .Values.firebase.passwordHashingPoolSize }}
+            - name: "FIREBASE_PASSWORD_HASHING_POOL_SIZE"
+              value: {{ quote .Values.firebase.passwordHashingPoolSize }}
+            {{- end }}
+            {{- if .Values.oauth.providerPublicServiceUrl }}
+            - name: "OAUTH_PROVIDER_PUBLIC_SERVICE_URL"
+              value: {{ quote .Values.oauth.providerPublicServiceUrl }}
+            {{- end }}
+            {{- if .Values.oauth.providerAdminServiceUrl }}
+            - name: "OAUTH_PROVIDER_ADMIN_SERVICE_URL"
+              value: {{ quote .Values.oauth.providerAdminServiceUrl }}
+            {{- end }}
+            {{- if .Values.oauth.providerConsentLoginBaseUrl }}
+            - name: "OAUTH_PROVIDER_CONSENT_LOGIN_BASE_URL"
+              value: {{ quote .Values.oauth.providerConsentLoginBaseUrl }}
+            {{- end }}
+            {{- if .Values.oauth.providerUrlConfiguredInOAuthProvider }}
+            - name: "OAUTH_PROVIDER_URL_CONFIGURED_IN_OAUTH_PROVIDER"
+              value: {{ quote .Values.oauth.providerUrlConfiguredInOAuthProvider }}
+            {{- end }}
+            {{- if .Values.oauth.clientSecretEncryptionKey }}
+            - name: "OAUTH_CLIENT_SECRET_ENCRYPTION_KEY"
+              value: {{ quote .Values.oauth.clientSecretEncryptionKey }}
+            {{- end }}
+            {{- if .Values.bulkMigration.parallelism }}
+            - name: "BULK_MIGRATION_PARALLELISM"
+              value: {{ quote .Values.bulkMigration.parallelism }}
+            {{- end }}
+            {{- if .Values.bulkMigration.batchSize }}
+            - name: "BULK_MIGRATION_BATCH_SIZE"
+              value: {{ quote .Values.bulkMigration.batchSize }}
+            {{- end }}
+            {{- if .Values.webauthn.recoverAccountTokenLifetime }}
+            - name: "WEBAUTHN_RECOVER_ACCOUNT_TOKEN_LIFETIME"
+              value: {{ quote .Values.webauthn.recoverAccountTokenLifetime }}
+            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ .Values.existingSecret | default (include "supertokens.fullname" .) }}
