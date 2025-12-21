@@ -2,7 +2,7 @@ image:
   repository: supertokens/supertokens-postgresql
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
-  tag: "7.0"
+  tag: "11.3"
 
 replicaCount: 1
 imagePullSecrets: []
@@ -21,10 +21,16 @@ database:
   port: 5432
   # -- database host
   host: postgres.postgres
-  # -- database user 
+  # -- database user
   user: postgres
   # -- database password
   password: password
+  # -- Prefix for all SuperTokens table names
+  tableNamesPrefix: ""
+  # -- Idle connection timeout in milliseconds
+  idleConnectionTimeout: null
+  # -- Minimum number of idle connections in the pool
+  minimumIdleConnections: null
 
 service:
   port: 3567
@@ -70,6 +76,71 @@ apiKeys:
   enabled: false
   # -- list of API Keys to load and use with supertokens-core
   keys: []
+
+# -- Log level for the SuperTokens core. Valid values: DEBUG, INFO, WARN, ERROR
+logLevel: "INFO"
+
+# -- Password hashing algorithm. Valid values: BCRYPT, ARGON2
+passwordHashingAlg: ""
+
+argon2:
+  # -- Number of iterations for Argon2 hashing
+  iterations: null
+  # -- Memory in KB for Argon2 hashing
+  memoryKb: null
+  # -- Parallelism for Argon2 hashing
+  parallelism: null
+  # -- Pool size for Argon2 hashing
+  hashingPoolSize: null
+
+# -- Log rounds for BCrypt hashing
+bcryptLogRounds: null
+
+# -- Regex pattern to allow specific IPs
+ipAllowRegex: ""
+
+# -- Regex pattern to deny specific IPs
+ipDenyRegex: ""
+
+totp:
+  # -- Maximum number of TOTP attempts before rate limiting
+  maxAttempts: null
+  # -- Cooldown period in seconds after TOTP rate limit is triggered
+  rateLimitCooldownSec: null
+
+# -- Path for info logs (null outputs to stdout)
+infoLogPath: null
+
+# -- Path for error logs (null outputs to stderr)
+errorLogPath: null
+
+firebase:
+  # -- Signing key for Firebase password hashing migration
+  passwordHashingSignerKey: ""
+  # -- Pool size for Firebase password hashing operations
+  passwordHashingPoolSize: null
+
+oauth:
+  # -- Public service URL for OAuth provider
+  providerPublicServiceUrl: ""
+  # -- Admin service URL for OAuth provider
+  providerAdminServiceUrl: ""
+  # -- Base URL for OAuth consent/login flow
+  providerConsentLoginBaseUrl: ""
+  # -- URL configured in the external OAuth provider
+  providerUrlConfiguredInOAuthProvider: ""
+  # -- Encryption key for OAuth client secrets
+  clientSecretEncryptionKey: ""
+
+bulkMigration:
+  # -- Number of parallel processes for bulk migration
+  parallelism: null
+  # -- Batch size for bulk migration operations
+  batchSize: null
+
+webauthn:
+  # -- Lifetime in milliseconds for WebAuthn account recovery tokens
+  recoverAccountTokenLifetime: null
 
 serviceAccount:
   # -- Specifies whether a service account should be created

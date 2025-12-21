@@ -11,7 +11,9 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "supertokens.fullname" . }}:{{ .Values.service.port }}/hello']
+      # Use -q (quiet) and --spider (don't download) to avoid writing files to disk,
+      # since the container runs with readOnlyRootFilesystem: true
+      args: ['-q', '--spider', '{{ include "supertokens.fullname" . }}:{{ .Values.service.port }}/hello']
       securityContext:
         readOnlyRootFilesystem: true
   restartPolicy: Never
